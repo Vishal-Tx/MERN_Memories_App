@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "./features/posts/postsSlice";
 
 const App = () => {
-  const [currentId, setCurrentId] = useState(null);
+  const [currentId, setCurrentId] = useState({ id: null, name: "" });
   const dispatch = useDispatch();
   // const posts = useSelector((store) => store.posts);
   const { isOpen } = useSelector((store) => store.modal);
@@ -50,9 +50,11 @@ const App = () => {
           <Container>
             <Grid
               container
+              direction="row"
               justifyContent="space-evenly"
               alignItems="stretch"
               spacing={3}
+              wrap="wrap-reverse"
             >
               <Grid item xs={12} sm={7}>
                 <Posts setCurrentId={setCurrentId} />

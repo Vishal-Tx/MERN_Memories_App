@@ -37,7 +37,11 @@ const postsSlice = createSlice({
         post._id === action.payload._id ? action.payload : post
       );
     },
-    remove: (state, action) => {},
+    remove: (state, action) => {
+      state.posts = state.posts.filter(
+        (post) => post._id !== action.payload._id
+      );
+    },
   },
   extraReducers: {
     [getPosts.pending]: (state, action) => {

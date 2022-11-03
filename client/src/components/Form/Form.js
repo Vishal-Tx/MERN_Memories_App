@@ -4,6 +4,7 @@ import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { postPost, updatePost } from "../../features/api";
 import { create, update } from "../../features/posts/postsSlice";
+import { toast } from "react-toastify";
 
 function Form({ currentId, setCurrentId }) {
   const dispatch = useDispatch();
@@ -19,7 +20,9 @@ function Form({ currentId, setCurrentId }) {
       posts: { posts },
     } = store;
     // console.log("uPost", posts);
-    return currentId ? posts.find((p) => p._id === currentId) : null;
+    return currentId.id && currentId.name === "update"
+      ? posts.find((p) => p._id === currentId.id)
+      : null;
   });
 
   useEffect(() => {
@@ -30,12 +33,14 @@ function Form({ currentId, setCurrentId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (currentId) {
-      const data = await updatePost(currentId, postData);
+    if (currentId.id && currentId.name === "update") {
+      const data = await updatePost(currentId.id, postData);
       dispatch(update(data));
+      if (data) toast.success(`Successfully updated the Memory.`);
     } else {
       const data = await postPost(postData);
       dispatch(create(data));
+      if (data) toast.success(`Successfully created the Memory.`);
     }
     clear();
   };
@@ -48,7 +53,7 @@ function Form({ currentId, setCurrentId }) {
   // console.log(postData);
 
   const clear = () => {
-    setCurrentId(null);
+    setCurrentId({ currentId: null, name: "" });
     setPostData({
       creator: "",
       title: "",
@@ -61,7 +66,6 @@ function Form({ currentId, setCurrentId }) {
     <Paper sx={{ p: 2, borderRadius: "15px" }}>
       <form
         autoComplete="off"
-        noValidate
         style={{
           display: "flex",
           flexWrap: "wrap",
@@ -71,7 +75,9 @@ function Form({ currentId, setCurrentId }) {
         onSubmit={handleSubmit}
       >
         <Typography variant="h5">
-          {!currentId ? "Creating a Memory" : "Updating a Memory"}
+          {currentId.id && currentId.name === "update"
+            ? "Updating a Memory"
+            : "Creating a Memory"}
         </Typography>
         <TextField
           name="creator"
@@ -81,6 +87,7 @@ function Form({ currentId, setCurrentId }) {
           value={postData.creator}
           onChange={handleChange}
           sx={{ my: 1 }}
+          required
         />
         <TextField
           name="title"

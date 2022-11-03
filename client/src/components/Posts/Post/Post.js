@@ -66,7 +66,7 @@ const Post = ({ post, setCurrentId }) => {
           style={{ color: "white" }}
           size="small"
           onClick={() => {
-            setCurrentId(post._id);
+            setCurrentId({ id: post._id, name: "update" });
           }}
         >
           <MoreHorizIcon fontSize="medium" />
@@ -106,7 +106,7 @@ const Post = ({ post, setCurrentId }) => {
           size="small"
           color="error"
           onClick={() => {
-            setCurrentId(post._id);
+            setCurrentId({ id: post._id, name: "delete" });
             dispatch(openModal());
           }}
         >
