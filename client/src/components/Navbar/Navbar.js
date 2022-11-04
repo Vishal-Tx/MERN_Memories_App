@@ -1,8 +1,8 @@
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import memories from "../../images/memories.png";
-import Link from "@mui/material/Link";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { Link } from "react-router-dom";
 const Navbar = () => {
   const user = null;
   const matches = useMediaQuery("(min-width:600px)");
@@ -11,7 +11,7 @@ const Navbar = () => {
       sx={
         matches
           ? {
-              borderRadius: 15,
+              borderRadius: 4,
               margin: "30px 0",
               display: "flex",
               flexDirection: "row",
@@ -35,12 +35,15 @@ const Navbar = () => {
         style={{ display: "flex", alignItems: "center", marginLeft: "30px" }}
       >
         <Typography
-          sx={{ color: "rgba(0,183,255, 1)", ml: matches ? "25px" : "8px" }}
+          sx={{
+            color: "rgba(0,183,255, 1)",
+            ml: matches ? "25px" : "8px",
+            textDecoration: "none",
+          }}
           variant="h2"
           align="center"
           component={Link}
-          href="/"
-          underline="none"
+          to="/"
         >
           {matches ? "Memories" : null}
         </Typography>
