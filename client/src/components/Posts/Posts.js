@@ -5,7 +5,6 @@ import { CircularProgress, Grid } from "@mui/material";
 
 function Posts({ setCurrentId }) {
   const { posts, isLoading } = useSelector((store) => store.posts);
-  // console.log("posts", posts);
   return isLoading ? (
     <div
       style={{

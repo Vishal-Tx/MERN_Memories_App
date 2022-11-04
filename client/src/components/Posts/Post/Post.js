@@ -14,10 +14,16 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from "react-redux";
 import { openModal } from "../../../features/modal/modalSlice";
+import { likePost } from "../../../features/api";
+import { update } from "../../../features/posts/postsSlice";
 dayjs.extend(relativeTime);
 
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
+  const handleLike = async () => {
+    const data = await likePost(post._id);
+    dispatch(update(data));
+  };
   return (
     <Card
       sx={{
@@ -80,14 +86,14 @@ const Post = ({ post, setCurrentId }) => {
         }}
       >
         <Typography variant="body2" color="textSecondary">
-          {post.tags.map((tag) => `${tag}`)}
+          {post.tags.map((tag) => `#${tag} `)}
         </Typography>
       </div>
       <Typography sx={{ padding: "0 16px" }} variant="h5" gutterBottom>
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="body2" color="textSecondary" component="p">
           {post.message}
         </Typography>
       </CardContent>
@@ -98,7 +104,7 @@ const Post = ({ post, setCurrentId }) => {
           justifyContent: "space-between",
         }}
       >
-        <Button size="small" color="primary" onClick={() => {}}>
+        <Button size="small" color="primary" onClick={handleLike}>
           <ThumbUpIcon fontSize="small" sx={{ mr: "4px" }} />
           {post.likeCount}
         </Button>

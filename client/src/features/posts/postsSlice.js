@@ -42,6 +42,11 @@ const postsSlice = createSlice({
         (post) => post._id !== action.payload._id
       );
     },
+    like: (state, action) => {
+      state.posts = state.posts.map((post) =>
+        post._id === action.payload._id ? action.payload : post
+      );
+    },
   },
   extraReducers: {
     [getPosts.pending]: (state, action) => {
@@ -50,7 +55,7 @@ const postsSlice = createSlice({
     [getPosts.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.posts = action.payload;
-      console.log(state.posts);
+      console.log("state.posts", state.posts);
     },
     [getPosts.rejected]: (state) => {
       state.isLoading = false;
@@ -58,6 +63,6 @@ const postsSlice = createSlice({
   },
 });
 
-export const { fetchAll, create, update, remove } = postsSlice.actions;
+export const { fetchAll, create, update, remove, like } = postsSlice.actions;
 
 export default postsSlice.reducer;

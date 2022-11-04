@@ -26,7 +26,6 @@ export const createPost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   const { id: _id } = req.params;
-  console.log("id", _id);
   const post = req.body;
 
   if (!mongoose.isValidObjectId(_id)) {
@@ -36,7 +35,7 @@ export const updatePost = async (req, res) => {
     new: true,
   });
   await updatedPost.save();
-  res.json(updatePost);
+  res.json(updatedPost);
 };
 
 export const deletePost = async (req, res) => {
@@ -47,4 +46,16 @@ export const deletePost = async (req, res) => {
   }
   await PostMessage.findByIdAndDelete(_id);
   res.json({ message: "post deleted successfully" });
+};
+
+export const likePost = async (req, res) => {
+  const { id: _id } = req.params;
+
+  if (!mongoose.isValidObjectId(_id)) {
+    return res.status(404).send("No post with that ID");
+  }
+  const likePost = await PostMessage.findById(_id);
+  likePost.likeCount += 1;
+  await likePost.save();
+  res.json(likePost);
 };

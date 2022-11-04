@@ -13,13 +13,12 @@ function Form({ currentId, setCurrentId }) {
     title: "",
     message: "",
     tags: "",
-    selctedFile: "",
+    selectedFile: "",
   });
   const post = useSelector((store) => {
     const {
       posts: { posts },
     } = store;
-    // console.log("uPost", posts);
     return currentId.id && currentId.name === "update"
       ? posts.find((p) => p._id === currentId.id)
       : null;
@@ -50,16 +49,15 @@ function Form({ currentId, setCurrentId }) {
       return { ...data, [name]: value };
     });
   };
-  // console.log(postData);
 
   const clear = () => {
-    setCurrentId({ currentId: null, name: "" });
+    setCurrentId({ id: null, name: "" });
     setPostData({
       creator: "",
       title: "",
       message: "",
       tags: "",
-      selctedFile: "",
+      selectedFile: "",
     });
   };
   return (
@@ -113,7 +111,9 @@ function Form({ currentId, setCurrentId }) {
           variant="outlined"
           fullWidth
           value={postData.tags}
-          onChange={handleChange}
+          onChange={(e) => {
+            setPostData({ ...postData, tags: e.target.value.split(",") });
+          }}
           sx={{ my: 1 }}
         />
         <div style={{ width: "100%", margin: "10px 0", display: "flex" }}>

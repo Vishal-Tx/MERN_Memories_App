@@ -26,7 +26,7 @@ export default function AlertDialog({ currentId, setCurrentId }) {
 
   const handleDeleteClick = async (id) => {
     const data = await deletePost(id);
-    console.log("datadelete", data);
+    // console.log("datadelete", data);
     if (data) {
       dispatch(closeModal());
       dispatch(remove(data));
