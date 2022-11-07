@@ -1,7 +1,7 @@
 import React from "react";
+
 import { Container } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
 import { Navbar, Home, Auth } from "./components";
 
 const App = () => {

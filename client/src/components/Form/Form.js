@@ -15,6 +15,7 @@ function Form({ currentId, setCurrentId }) {
     tags: "",
     selectedFile: "",
   });
+
   const post = useSelector((store) => {
     const {
       posts: { posts },
@@ -30,11 +31,26 @@ function Form({ currentId, setCurrentId }) {
     }
   }, [post]);
 
+  const clear = () => {
+    console.log("clear1");
+    setCurrentId({ id: null, name: "" });
+    console.log("clear2");
+    setPostData({
+      creator: "",
+      title: "",
+      message: "",
+      tags: "",
+      selectedFile: "",
+    });
+    console.log("clear3");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentId.id && currentId.name === "update") {
       const data = await updatePost(currentId.id, postData);
       dispatch(update(data));
+
       if (data) toast.success(`Successfully updated the Memory.`);
     } else {
       const data = await postPost(postData);
@@ -50,16 +66,6 @@ function Form({ currentId, setCurrentId }) {
     });
   };
 
-  const clear = () => {
-    setCurrentId({ id: null, name: "" });
-    setPostData({
-      creator: "",
-      title: "",
-      message: "",
-      tags: "",
-      selectedFile: "",
-    });
-  };
   return (
     <Paper sx={{ p: 2, borderRadius: "15px" }}>
       <form

@@ -10,9 +10,16 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import "./Auth.css";
+import { GoogleLogin } from "@react-oauth/google";
 import Input from "./Input";
+import jwt_decode from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { LogIn } from "../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const handleSubmit = (e) => {
@@ -25,6 +32,13 @@ const Auth = () => {
   const switchMode = () => {
     setIsSignUp((prevState) => !prevState);
     handleShowPassword(false);
+  };
+
+  const googleSuccess = (res) => {
+    const result = jwt_decode(res?.credential);
+    const { name, picture, sub } = result;
+    dispatch(LogIn({ name, picture, sub }));
+    navigate("/");
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -48,7 +62,7 @@ const Auth = () => {
         >
           <Grid container spacing={2}>
             {isSignUp && (
-              <>
+              <div>
                 <Input
                   name="firstName"
                   label="First Name"
@@ -62,7 +76,7 @@ const Auth = () => {
                   handleChange={handleChange}
                   half
                 />
-              </>
+              </div>
             )}
             <Input
               name="email"
@@ -95,6 +109,14 @@ const Auth = () => {
           >
             {isSignUp ? "Sign Up" : "Sign In"}
           </Button>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <GoogleLogin
+              onSuccess={googleSuccess}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </div>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Button onClick={switchMode} color="primary">

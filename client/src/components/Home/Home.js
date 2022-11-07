@@ -17,7 +17,7 @@ const Home = () => {
   }, [dispatch, currentId]);
 
   return (
-    <>
+    <div>
       {isOpen && <Modal currentId={currentId} setCurrentId={setCurrentId} />}
       <Grow in>
         <Container>
@@ -38,7 +38,7 @@ const Home = () => {
           </Grid>
         </Container>
       </Grow>
-    </>
+    </div>
   );
 };
 
