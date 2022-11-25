@@ -1,10 +1,20 @@
 import axios from "axios";
 
-const url = "http://localhost:3001/posts";
+const API = axios.create({ baseURL: "http://localhost:3001" });
+
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
+  }
+
+  return req;
+});
 
 export const postPost = async (post) => {
   try {
-    const { data } = await axios.post(url, post);
+    const { data } = await API.post("/posts", post);
     return data;
   } catch (error) {
     console.log(error);
@@ -13,7 +23,7 @@ export const postPost = async (post) => {
 
 export const updatePost = async (id, updatedPost) => {
   try {
-    const { data } = await axios.patch(`${url}/${id}`, updatedPost);
+    const { data } = await API.patch(`/posts/${id}`, updatedPost);
     return data;
   } catch (error) {
     console.log(error);
@@ -22,7 +32,7 @@ export const updatePost = async (id, updatedPost) => {
 
 export const deletePost = async (id) => {
   try {
-    const { data } = await axios.delete(`${url}/${id}`);
+    const { data } = await API.delete(`/posts/${id}`);
     return data;
   } catch (error) {
     console.log(error);
@@ -31,9 +41,29 @@ export const deletePost = async (id) => {
 
 export const likePost = async (id) => {
   try {
-    const { data } = await axios.patch(`${url}/${id}/likePost`);
+    const { data } = await API.patch(`/posts/${id}/likePost`);
     return data;
   } catch (error) {
     console.log("errer", error);
+  }
+};
+
+export const signin = async (formData) => {
+  try {
+    const { data } = await API.post("/user/signin", formData);
+    console.log("SignInData", data);
+    return data;
+  } catch (error) {
+    console.log("signinError", error);
+  }
+};
+
+export const signup = async (formData) => {
+  try {
+    const { data } = await API.post("/user/signup", formData);
+    console.log("SignupData", data);
+    return data;
+  } catch (error) {
+    console.log("signupError", error);
   }
 };

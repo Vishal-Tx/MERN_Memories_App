@@ -31,8 +31,8 @@ const Navbar = () => {
   };
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  console.log("user", user);
-  const matches = useMediaQuery("(min-width:612px)");
+  console.log("userstate", user);
+  const matches = useMediaQuery("(min-width:600px)");
 
   const handleLogout = () => {
     setUser(null);
@@ -58,9 +58,6 @@ const Navbar = () => {
               flexWrap: "wrap",
             }
           : {
-              top: "auto",
-              bottom: 0,
-              mb: 0,
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
@@ -77,7 +74,9 @@ const Navbar = () => {
           sx={{
             color: "rgba(0,183,255, 1)",
             ml: matches ? "25px" : "8px",
+
             textDecoration: "none",
+            fontSize: matches ? "auto" : "40px",
           }}
           variant="h2"
           align="center"
@@ -98,12 +97,12 @@ const Navbar = () => {
         ) : null}
       </div>
       <Toolbar sx={{ mr: matches ? "30px" : "25px" }}>
-        {user ? (
+        {user?.result ? (
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={user.name} src={user.picture}>
-                  {user.name.charAt(0)}
+              <IconButton onClick={handleOpenUserMenu}>
+                <Avatar alt={user.result.name} src={user.result.picture}>
+                  {user.result.name.charAt(0)}
                 </Avatar>
               </IconButton>
             </Tooltip>
@@ -124,7 +123,7 @@ const Navbar = () => {
               onClose={handleCloseUserMenu}
             >
               <MenuItem>
-                <Typography textAlign="center">{user.name}</Typography>
+                <Typography textAlign="center">{user.result.name}</Typography>
               </MenuItem>
               <MenuItem>
                 <Button

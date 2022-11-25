@@ -29,10 +29,10 @@ const Home = () => {
             spacing={3}
             wrap="wrap-reverse"
           >
-            <Grid item xs={12} sm={7}>
+            <Grid item xs={12} sm={5} md={7}>
               <Posts setCurrentId={setCurrentId} />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={5} md={4} sx={{ mt: { xs: "80px", sm: 0 } }}>
               <Form currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
           </Grid>

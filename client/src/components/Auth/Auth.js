@@ -6,7 +6,6 @@ import {
   Grid,
   Typography,
   Container,
-  TextField,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import "./Auth.css";
@@ -16,28 +15,51 @@ import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { LogIn } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import { signin, signup } from "../../features/api/";
 
 const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData);
+    if (isSignUp) {
+      const signupRes = await signup(formData);
+      console.log("signup", signupRes);
+      dispatch(LogIn(signupRes));
+      navigate("/");
+    } else {
+      const signinRes = await signin(formData);
+      console.log("signin", signinRes);
+      dispatch(LogIn(signinRes));
+      navigate("/");
+    }
   };
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevdata) => ({ ...prevdata, [name]: value }));
+  };
   const handleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
   };
   const switchMode = () => {
     setIsSignUp((prevState) => !prevState);
-    handleShowPassword(false);
   };
 
   const googleSuccess = (res) => {
     const result = jwt_decode(res?.credential);
     const { name, picture, sub } = result;
-    dispatch(LogIn({ name, picture, sub }));
+    const gLoginData = { result: { name, picture, sub } };
+    dispatch(LogIn(gLoginData));
     navigate("/");
   };
   return (
@@ -62,7 +84,7 @@ const Auth = () => {
         >
           <Grid container spacing={2}>
             {isSignUp && (
-              <div>
+              <>
                 <Input
                   name="firstName"
                   label="First Name"
@@ -76,7 +98,7 @@ const Auth = () => {
                   handleChange={handleChange}
                   half
                 />
-              </div>
+              </>
             )}
             <Input
               name="email"
