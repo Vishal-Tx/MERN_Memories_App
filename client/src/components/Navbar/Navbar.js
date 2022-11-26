@@ -137,6 +137,44 @@ const Navbar = () => {
             </Menu>
           </Box>
         ) : (
+          // <Box sx={{ flexGrow: 0 }}>
+          //   <Tooltip title="Open settings">
+          //     <IconButton onClick={handleOpenUserMenu}>
+          //       <Avatar alt={user.result.name} src={user.result.picture}>
+          //         {user.result.name.charAt(0)}
+          //       </Avatar>
+          //     </IconButton>
+          //   </Tooltip>
+          //   <Menu
+          //     sx={{ mt: "45px" }}
+          //     id="menu-appbar"
+          //     anchorEl={anchorElUser}
+          //     anchorOrigin={{
+          //       vertical: "top",
+          //       horizontal: "left",
+          //     }}
+          //     keepMounted
+          //     transformOrigin={{
+          //       vertical: "top",
+          //       horizontal: "left",
+          //     }}
+          //     open={Boolean(anchorElUser)}
+          //     onClose={handleCloseUserMenu}
+          //   >
+          //     <MenuItem>
+          //       <Typography textAlign="center">{user.result.name}</Typography>
+          //     </MenuItem>
+          //     <MenuItem>
+          //       <Button
+          //         variant="contained"
+          //         color="secondary"
+          //         onClick={handleLogout}
+          //       >
+          //         Logout
+          //       </Button>
+          //     </MenuItem>
+          //   </Menu>
+          // </Box>
           <Button
             component={Link}
             to="/auth"

@@ -9,12 +9,12 @@ import { toast } from "react-toastify";
 function Form({ currentId, setCurrentId }) {
   const dispatch = useDispatch();
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
     selectedFile: "",
   });
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
   const post = useSelector((store) => {
     const {
@@ -36,7 +36,6 @@ function Form({ currentId, setCurrentId }) {
     setCurrentId({ id: null, name: "" });
     console.log("clear2");
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
@@ -49,11 +48,13 @@ function Form({ currentId, setCurrentId }) {
     e.preventDefault();
     if (currentId.id && currentId.name === "update") {
       const data = await updatePost(currentId.id, postData);
+      console.log("udata", data);
       dispatch(update(data));
 
       if (data) toast.success(`Successfully updated the Memory.`);
     } else {
-      const data = await postPost(postData);
+      const data = await postPost({ ...postData, name: user?.result?.name });
+      console.log("udata", data);
       dispatch(create(data));
       if (data) toast.success(`Successfully created the Memory.`);
     }
@@ -65,6 +66,16 @@ function Form({ currentId, setCurrentId }) {
       return { ...data, [name]: value };
     });
   };
+
+  if (!user?.result?.name) {
+    return (
+      <Paper>
+        <Typography variant="h6" align="center">
+          Please Sign in to create your own Memories.
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Paper sx={{ p: 2, borderRadius: "15px" }}>
@@ -83,16 +94,7 @@ function Form({ currentId, setCurrentId }) {
             ? "Updating a Memory"
             : "Creating a Memory"}
         </Typography>
-        <TextField
-          name="creator"
-          label="Creator"
-          variant="outlined"
-          fullWidth
-          value={postData.creator}
-          onChange={handleChange}
-          sx={{ my: 1 }}
-          required
-        />
+
         <TextField
           name="title"
           label="Title"

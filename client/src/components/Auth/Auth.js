@@ -58,7 +58,7 @@ const Auth = () => {
   const googleSuccess = (res) => {
     const result = jwt_decode(res?.credential);
     const { name, picture, sub } = result;
-    const gLoginData = { result: { name, picture, sub } };
+    const gLoginData = { result: { name, picture }, token: sub };
     dispatch(LogIn(gLoginData));
     navigate("/");
   };
