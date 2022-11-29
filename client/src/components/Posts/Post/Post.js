@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardActions,
@@ -11,8 +11,9 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import * as dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../../features/modal/modalSlice";
 import { likePost } from "../../../features/api";
 import { update } from "../../../features/posts/postsSlice";
@@ -24,6 +25,40 @@ const Post = ({ post, setCurrentId }) => {
     const data = await likePost(post._id);
     dispatch(update(data));
   };
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const userId = user?.result?.sub || user?.result?._id;
+
+  const { authData } = useSelector((store) => store.auth);
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [authData]);
+
+  const Likes = () => {
+    if (post.likes.length > 0) {
+      return post.likes.find((like) => like === userId) ? (
+        <>
+          <ThumbUpIcon fontSize="small" sx={{ mr: "4px" }} />
+          &nbsp;
+          {post.likes.length > 2
+            ? `You and ${post.likes.length - 1} others`
+            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+        </>
+      ) : (
+        <>
+          <ThumbUpOffAltIcon fontSize="small" />
+          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+        </>
+      );
+    }
+    return (
+      <>
+        <ThumbUpOffAltIcon fontSize="small" />
+        &nbsp;Like
+      </>
+    );
+  };
+
   return (
     <Card
       sx={{
@@ -68,16 +103,18 @@ const Post = ({ post, setCurrentId }) => {
           color: "white",
         }}
       >
-        <Button
-          style={{ color: "white" }}
-          size="small"
-          onClick={(e) => {
-            e.stopPropagation();
-            setCurrentId({ id: post._id, name: "update" });
-          }}
-        >
-          <MoreHorizIcon fontSize="medium" />
-        </Button>
+        {(post?.creator === user?.result?.sub ||
+          post?.creator === user?.result?._id) && (
+          <Button
+            style={{ color: "white" }}
+            size="small"
+            onClick={(e) => {
+              setCurrentId({ id: post._id, name: "update" });
+            }}
+          >
+            <MoreHorizIcon fontSize="medium" />
+          </Button>
+        )}
       </div>
       <div
         style={{
@@ -105,21 +142,29 @@ const Post = ({ post, setCurrentId }) => {
           justifyContent: "space-between",
         }}
       >
-        <Button size="small" color="primary" onClick={handleLike}>
-          <ThumbUpIcon fontSize="small" sx={{ mr: "4px" }} />
-          {post.likeCount}
-        </Button>
         <Button
           size="small"
-          color="error"
-          onClick={() => {
-            setCurrentId({ id: post._id, name: "delete" });
-            dispatch(openModal());
-          }}
+          color="primary"
+          onClick={handleLike}
+          disabled={!user?.result}
         >
-          <DeleteIcon fontSize="small" sx={{ mr: "2px" }} />
-          Delete
+          <Likes />
         </Button>
+
+        {(post?.creator === user?.result?.sub ||
+          post?.creator === user?.result?._id) && (
+          <Button
+            size="small"
+            color="error"
+            onClick={() => {
+              setCurrentId({ id: post._id, name: "delete" });
+              dispatch(openModal());
+            }}
+          >
+            <DeleteIcon fontSize="small" sx={{ mr: "2px" }} />
+            Delete
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

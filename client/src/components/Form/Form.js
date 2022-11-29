@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Typography, Paper, Button, TextField } from "@mui/material";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,10 +11,14 @@ function Form({ currentId, setCurrentId }) {
   const [postData, setPostData] = useState({
     title: "",
     message: "",
-    tags: "",
+    tags: [],
     selectedFile: "",
   });
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+
+  // const [user, setUser] = useState(authData);
+  // console.log("formauthData", authData);
+  const user = JSON.parse(localStorage.getItem("profile"));
+  const inputRef = useRef(null);
 
   const post = useSelector((store) => {
     const {
@@ -25,22 +29,25 @@ function Form({ currentId, setCurrentId }) {
       : null;
   });
 
+  const { authData } = useSelector((store) => store.auth);
+
   useEffect(() => {
     if (post) {
       setPostData(post);
     }
-  }, [post]);
+  }, [post, authData]);
 
   const clear = () => {
     console.log("clear1");
-    setCurrentId({ id: null, name: "" });
+    setCurrentId({ id: 0, name: "" });
     console.log("clear2");
     setPostData({
       title: "",
       message: "",
-      tags: "",
+      tags: [],
       selectedFile: "",
     });
+    inputRef.current.value = null;
     console.log("clear3");
   };
 
@@ -58,6 +65,7 @@ function Form({ currentId, setCurrentId }) {
       dispatch(create(data));
       if (data) toast.success(`Successfully created the Memory.`);
     }
+    console.log("hitclear");
     clear();
   };
   const handleChange = (e) => {
@@ -67,17 +75,13 @@ function Form({ currentId, setCurrentId }) {
     });
   };
 
-  if (!user?.result?.name) {
-    return (
-      <Paper>
-        <Typography variant="h6" align="center">
-          Please Sign in to create your own Memories.
-        </Typography>
-      </Paper>
-    );
-  }
-
-  return (
+  return !user ? (
+    <Paper>
+      <Typography variant="h6" align="center">
+        Please Sign in to create your own Memories.
+      </Typography>
+    </Paper>
+  ) : (
     <Paper sx={{ p: 2, borderRadius: "15px" }}>
       <form
         autoComplete="off"
@@ -103,6 +107,7 @@ function Form({ currentId, setCurrentId }) {
           value={postData.title}
           onChange={handleChange}
           sx={{ my: 1 }}
+          required
         />
         <TextField
           name="message"
@@ -128,6 +133,7 @@ function Form({ currentId, setCurrentId }) {
           <FileBase
             type="file"
             multiple={false}
+            ref={inputRef}
             onDone={({ base64 }) =>
               setPostData({ ...postData, selectedFile: base64 })
             }

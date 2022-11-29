@@ -6,6 +6,7 @@ const url = "http://localhost:3001/posts";
 const initialState = {
   posts: [],
   isLoading: true,
+  isError: null,
 };
 console.log("initialState.posts", initialState.posts);
 
@@ -16,7 +17,8 @@ export const getPosts = createAsyncThunk(
       const res = await axios(url);
       return res.data;
     } catch (error) {
-      console.log(error);
+      console.log("fetcherror", error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -59,6 +61,8 @@ const postsSlice = createSlice({
     },
     [getPosts.rejected]: (state) => {
       state.isLoading = false;
+      state.isError = true;
+      console.log("rejected");
     },
   },
 });

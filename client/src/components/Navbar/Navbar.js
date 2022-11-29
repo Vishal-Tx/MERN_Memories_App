@@ -14,33 +14,33 @@ import React, { useState, useEffect } from "react";
 import memories from "../../images/memories.png";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import jwt_decode from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
 import { LogOut } from "../../features/auth/authSlice";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const [anchorElUser, setAnchorElUser] = useState(null);
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+
   console.log("userstate", user);
   const matches = useMediaQuery("(min-width:600px)");
 
   const handleLogout = () => {
-    setUser(null);
     dispatch(LogOut());
+
+    setUser(null);
     navigate("/");
   };
 
+  const token = user?.token;
   useEffect(() => {
+    if (token) {
+      const decodedToken = jwt_decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) handleLogout();
+    }
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
 
@@ -98,83 +98,27 @@ const Navbar = () => {
       </div>
       <Toolbar sx={{ mr: matches ? "30px" : "25px" }}>
         {user?.result ? (
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu}>
-                <Avatar alt={user.result.name} src={user.result.picture}>
-                  {user.result.name.charAt(0)}
-                </Avatar>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+          <Box style={{ display: "flex", alignItems: "center" }}>
+            {matches ? (
+              <Typography variant="h6">{user?.result.name}</Typography>
+            ) : null}
+            <Avatar
+              alt={user?.result.name}
+              src={user?.result.picture}
+              sx={{ margin: "0 25px 0" }}
             >
-              <MenuItem>
-                <Typography textAlign="center">{user.result.name}</Typography>
-              </MenuItem>
-              <MenuItem>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </Button>
-              </MenuItem>
-            </Menu>
+              {user?.result.name.charAt(0)}
+            </Avatar>
+            <Button
+              onClick={handleLogout}
+              variant="contained"
+              color="secondary"
+              sx={{ height: "45px" }}
+            >
+              Logout
+            </Button>
           </Box>
         ) : (
-          // <Box sx={{ flexGrow: 0 }}>
-          //   <Tooltip title="Open settings">
-          //     <IconButton onClick={handleOpenUserMenu}>
-          //       <Avatar alt={user.result.name} src={user.result.picture}>
-          //         {user.result.name.charAt(0)}
-          //       </Avatar>
-          //     </IconButton>
-          //   </Tooltip>
-          //   <Menu
-          //     sx={{ mt: "45px" }}
-          //     id="menu-appbar"
-          //     anchorEl={anchorElUser}
-          //     anchorOrigin={{
-          //       vertical: "top",
-          //       horizontal: "left",
-          //     }}
-          //     keepMounted
-          //     transformOrigin={{
-          //       vertical: "top",
-          //       horizontal: "left",
-          //     }}
-          //     open={Boolean(anchorElUser)}
-          //     onClose={handleCloseUserMenu}
-          //   >
-          //     <MenuItem>
-          //       <Typography textAlign="center">{user.result.name}</Typography>
-          //     </MenuItem>
-          //     <MenuItem>
-          //       <Button
-          //         variant="contained"
-          //         color="secondary"
-          //         onClick={handleLogout}
-          //       >
-          //         Logout
-          //       </Button>
-          //     </MenuItem>
-          //   </Menu>
-          // </Box>
           <Button
             component={Link}
             to="/auth"

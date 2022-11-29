@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { LogIn } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { signin, signup } from "../../features/api/";
+import { toast } from "react-toastify";
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -33,15 +34,26 @@ const Auth = () => {
     e.preventDefault();
     console.log(formData);
     if (isSignUp) {
-      const signupRes = await signup(formData);
-      console.log("signup", signupRes);
-      dispatch(LogIn(signupRes));
-      navigate("/");
+      try {
+        const signupRes = await signup(formData);
+        console.log("signup", signupRes);
+        dispatch(LogIn(signupRes));
+        navigate("/");
+      } catch (error) {
+        console.log();
+        toast.error(error.response.data.message);
+      }
     } else {
-      const signinRes = await signin(formData);
-      console.log("signin", signinRes);
-      dispatch(LogIn(signinRes));
-      navigate("/");
+      try {
+        const signinRes = await signin(formData);
+        if (signinRes.response.data) return alert("wrongpassword");
+        console.log("signin", signinRes);
+
+        dispatch(LogIn(signinRes));
+        navigate("/");
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
     }
   };
   const handleChange = (e) => {
@@ -56,9 +68,13 @@ const Auth = () => {
   };
 
   const googleSuccess = (res) => {
-    const result = jwt_decode(res?.credential);
-    const { name, picture, sub } = result;
-    const gLoginData = { result: { name, picture }, token: sub };
+    const googleResponse = jwt_decode(res?.credential);
+    console.log("result", googleResponse);
+    const { name, picture, sub } = googleResponse;
+    const gLoginData = {
+      result: { name, picture, sub },
+      token: res?.credential,
+    };
     dispatch(LogIn(gLoginData));
     navigate("/");
   };

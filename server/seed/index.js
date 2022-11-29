@@ -31,4 +31,4 @@ const deleteAll = async () => {
   }
 };
 
-deleteAll().then(console.log("database cleared"));
+await deleteAll().then(console.log("database cleared"));

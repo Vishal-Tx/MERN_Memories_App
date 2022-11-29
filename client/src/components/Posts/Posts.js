@@ -1,10 +1,11 @@
 import React from "react";
 import Post from "./Post/Post";
 import { useSelector } from "react-redux";
-import { CircularProgress, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 
 function Posts({ setCurrentId }) {
-  const { posts, isLoading } = useSelector((store) => store.posts);
+  const { posts, isLoading, isError } = useSelector((store) => store.posts);
+  console.log("storepost", posts);
   return isLoading ? (
     <div
       style={{
@@ -16,7 +17,7 @@ function Posts({ setCurrentId }) {
     >
       <CircularProgress size={70} />
     </div>
-  ) : (
+  ) : !isError ? (
     <Grid container alignItems="stretch" spacing={3}>
       {posts.map((post) => (
         <Grid
@@ -31,6 +32,10 @@ function Posts({ setCurrentId }) {
         </Grid>
       ))}
     </Grid>
+  ) : (
+    <Box sx={{ height: "200px", width: "200px" }}>
+      Something went wrong. Try Refresh!
+    </Box>
   );
 }
 
