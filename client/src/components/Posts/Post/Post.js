@@ -25,14 +25,15 @@ const Post = ({ post, setCurrentId }) => {
     const data = await likePost(post._id);
     dispatch(update(data));
   };
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?.sub || user?.result?._id;
 
   const { authData } = useSelector((store) => store.auth);
 
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("profile")));
-  }, [authData]);
+  // useEffect(() => {
+  //   setUser(JSON.parse(localStorage.getItem("profile")));
+  // }, [authData]);
 
   const Likes = () => {
     if (post.likes.length > 0) {

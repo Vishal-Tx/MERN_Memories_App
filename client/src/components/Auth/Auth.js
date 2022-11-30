@@ -32,27 +32,26 @@ const Auth = () => {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    // console.log("formData", formData);
     if (isSignUp) {
       try {
         const signupRes = await signup(formData);
-        console.log("signup", signupRes);
+        // console.log("signup", signupRes);
         dispatch(LogIn(signupRes));
         navigate("/");
       } catch (error) {
-        console.log();
-        toast.error(error.response.data.message);
+        console.log("error", error);
+        toast.error(error?.response?.data.message);
       }
     } else {
       try {
         const signinRes = await signin(formData);
-        if (signinRes.response.data) return alert("wrongpassword");
         console.log("signin", signinRes);
-
         dispatch(LogIn(signinRes));
         navigate("/");
       } catch (error) {
-        toast.error(error.response.data.message);
+        // console.log("signinResError", error);
+        toast.error(error?.response?.data.message);
       }
     }
   };

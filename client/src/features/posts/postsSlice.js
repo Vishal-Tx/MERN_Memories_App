@@ -6,7 +6,7 @@ const url = "http://localhost:3001/posts";
 const initialState = {
   posts: [],
   isLoading: true,
-  isError: null,
+  error: null,
 };
 console.log("initialState.posts", initialState.posts);
 
@@ -17,8 +17,11 @@ export const getPosts = createAsyncThunk(
       const res = await axios(url);
       return res.data;
     } catch (error) {
+      const {
+        response: { data, status },
+      } = error;
       console.log("fetcherror", error);
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue({ data, status });
     }
   }
 );
@@ -59,9 +62,10 @@ const postsSlice = createSlice({
       state.posts = action.payload;
       console.log("state.posts", state.posts);
     },
-    [getPosts.rejected]: (state) => {
+    [getPosts.rejected]: (state, action) => {
+      console.log("Raction", action);
       state.isLoading = false;
-      state.isError = true;
+      state.error = action.payload;
       console.log("rejected");
     },
   },
