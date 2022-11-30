@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Container, Grid, Grow } from "@mui/material";
+import { Container, Grid, Grow, Paper } from "@mui/material";
 import Form from "../Form/Form";
 import Posts from "../Posts/Posts";
 import Modal from "../modal";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../features/posts/postsSlice";
+import Page from "../Page/Page";
 
 const Home = () => {
   const [currentId, setCurrentId] = useState({ id: null, name: "" });
@@ -34,6 +35,9 @@ const Home = () => {
             </Grid>
             <Grid item xs={12} sm={5} md={4} sx={{ mt: { xs: "80px", sm: 0 } }}>
               <Form currentId={currentId} setCurrentId={setCurrentId} />
+              <Paper elevation={6}>
+                <Page />
+              </Paper>
             </Grid>
           </Grid>
         </Container>
