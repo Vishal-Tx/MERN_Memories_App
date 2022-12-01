@@ -5,7 +5,7 @@ import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 
 function Posts({ setCurrentId }) {
   const { posts, isLoading, error } = useSelector((store) => store.posts);
-  console.log("storeerror", error);
+  console.log("error", error);
   return isLoading ? (
     <div
       style={{
@@ -19,13 +19,14 @@ function Posts({ setCurrentId }) {
     </div>
   ) : !error ? (
     <Grid container alignItems="stretch" spacing={3}>
-      {posts.map((post) => (
+      {posts?.map((post) => (
         <Grid
           key={post._id}
           item
           xs={12}
           sm={12}
           md={6}
+          lg={3}
           sx={{ justifyContent: { sm: "flex-start" } }}
         >
           <Post post={post} setCurrentId={setCurrentId} />
@@ -38,10 +39,10 @@ function Posts({ setCurrentId }) {
         height: "100vh",
       }}
     >
-      <Typography sx={{ color: "white", fontSize: "100px" }} align="center">
+      <Typography sx={{ color: "#1565c0", fontSize: "100px" }} align="center">
         {error.status}
       </Typography>
-      <Typography sx={{ color: "white", fontSize: "80px" }} align="center">
+      <Typography sx={{ color: "#1565c0", fontSize: "80px" }} align="center">
         {error?.data?.message ? error?.data?.message : "Try Refresh"}
       </Typography>
     </Box>

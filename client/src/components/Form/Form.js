@@ -76,13 +76,13 @@ function Form({ currentId, setCurrentId }) {
   };
 
   return !user ? (
-    <Paper>
+    <Paper elevation={6}>
       <Typography variant="h6" align="center">
         Please Sign in to create your own Memories.
       </Typography>
     </Paper>
   ) : (
-    <Paper sx={{ p: 2, borderRadius: "15px" }}>
+    <Paper sx={{ p: 2, borderRadius: "15px" }} elevation={6}>
       <form
         autoComplete="off"
         style={{

@@ -6,11 +6,11 @@ import {
   Routes,
   Route,
   Navigate,
-  redirect,
 } from "react-router-dom";
 import { Navbar, Home, Auth, PostDetails } from "./components";
 
 const App = () => {
+  const user = JSON.parse(localStorage.getItem("profile"));
   return (
     <Router>
       <Container maxWidth="xl">
@@ -18,10 +18,14 @@ const App = () => {
         <Routes>
           <Route path="/" exact element={<Navigate to="/posts" />} />
           <Route path="/posts" exact element={<Home />} />
-          <Route path="/posts/search" exact component={Home} />
-          <Route path="/posts/:id" exact component={PostDetails} />
+          <Route path="/posts/search" exact element={<Home />} />
+          <Route path="/posts/:id" exact element={<PostDetails />} />
 
-          <Route path="/auth" exact element={<Auth />} />
+          <Route
+            path="/auth"
+            exact
+            element={!user ? <Auth /> : <Navigate to="/posts" />}
+          />
         </Routes>
       </Container>
     </Router>

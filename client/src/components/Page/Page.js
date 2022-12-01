@@ -1,27 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import {
-  Link,
-  MemoryRouter,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-const Page = () => {
+import { getPosts } from "../../features/posts/postsSlice";
+
+const Page = ({ page, currentId }) => {
+  const dispatch = useDispatch();
+  const { currentPage, numberOfPages } = useSelector((state) => state.posts);
+  console.log(currentPage, numberOfPages);
+
+  useEffect(() => {
+    if (page) dispatch(getPosts(page));
+  }, [dispatch, page, currentId]);
+
   return (
     <Pagination
-      count={10}
-      page={1}
+      count={numberOfPages}
+      page={page}
       color="secondary"
       sx={{
-        borderRadius: "15px",
         mt: "12px",
-        py: "2px",
+        py: "4px",
       }}
       renderItem={(item) => (
-        <PaginationItem component={Link} to={`/posts?age=${1}`} {...item} />
+        <PaginationItem
+          variant="text"
+          component={Link}
+          to={`/posts?page=${item.page}`}
+          {...item}
+        />
       )}
     />
   );

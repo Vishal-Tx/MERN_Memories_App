@@ -17,7 +17,7 @@ db.once("open", () => {
 
 const deleteAll = async () => {
   await PostMessage.deleteMany({});
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 100; i++) {
     const p = new PostMessage({
       title: "Test Post",
       message: "For testing purposes",

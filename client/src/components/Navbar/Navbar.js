@@ -11,7 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import memories from "../../images/memories.png";
+import memoriesLogo from "../../images/memories-Logo.png";
+import memoriesText from "../../images/memories-Text.png";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
@@ -67,35 +68,30 @@ const Navbar = () => {
       position={matches ? "static" : "fixed"}
       color="inherit"
     >
-      <div
+      <Link
+        to="/"
         style={{ display: "flex", alignItems: "center", marginLeft: "30px" }}
       >
-        <Typography
-          sx={{
-            color: "rgba(0,183,255, 1)",
-            ml: matches ? "25px" : "8px",
-
-            textDecoration: "none",
-            fontSize: matches ? "auto" : "40px",
-          }}
-          variant="h2"
-          align="center"
-          component={Link}
-          to="/"
-        >
-          {matches ? "Memories" : "M"}
-        </Typography>
         {matches ? (
           <img
-            src={memories}
+            src={memoriesText}
             alt="memories"
-            height="60"
+            height="45px"
             style={{
               marginLeft: matches ? "5px" : "0",
             }}
           />
         ) : null}
-      </div>
+        <img
+          src={memoriesLogo}
+          alt="memories"
+          height="40px"
+          style={{
+            marginLeft: matches ? "10px" : "0",
+            marginTop: matches ? "4px" : "0",
+          }}
+        />
+      </Link>
       <Toolbar sx={{ mr: matches ? "30px" : "25px" }}>
         {user?.result ? (
           <Box style={{ display: "flex", alignItems: "center" }}>

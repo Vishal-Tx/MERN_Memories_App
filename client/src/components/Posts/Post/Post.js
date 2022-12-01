@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Card,
   CardActions,
@@ -13,7 +13,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { openModal } from "../../../features/modal/modalSlice";
 import { likePost } from "../../../features/api";
 import { update } from "../../../features/posts/postsSlice";
@@ -29,7 +29,7 @@ const Post = ({ post, setCurrentId }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?.sub || user?.result?._id;
 
-  const { authData } = useSelector((store) => store.auth);
+  // const { authData } = useSelector((store) => store.auth);
 
   // useEffect(() => {
   //   setUser(JSON.parse(localStorage.getItem("profile")));
@@ -62,6 +62,8 @@ const Post = ({ post, setCurrentId }) => {
 
   return (
     <Card
+      raised
+      elevation={6}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -70,7 +72,7 @@ const Post = ({ post, setCurrentId }) => {
         height: "100%",
         position: "relative",
         // border: "0.5px solid rgba(0,0,0,0.45)",
-        // boxShadow: "10px 10px 5px 2px rgba(0,0,0,0.45)",
+        // boxShadow: "12px 12px 0.5px black",
       }}
     >
       <CardMedia

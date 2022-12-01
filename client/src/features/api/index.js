@@ -21,6 +21,22 @@ export const postPost = async (post) => {
   }
 };
 
+export const fetchPosts = async (page) => {
+  const { data } = await API.get(`/posts?page=${page}`);
+  console.log("totalPosts", data);
+  return data;
+};
+
+export const fetchPostsBySearch = async (searchQuery) => {
+  const { data } = await API.get(
+    `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${
+      searchQuery.tags
+    }`
+  );
+  console.log("searchAPIData", data);
+  return data;
+};
+
 export const updatePost = async (id, updatedPost) => {
   try {
     const { data } = await API.patch(`/posts/${id}`, updatedPost);
