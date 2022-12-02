@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:3001" });
+const API = axios.create({ baseURL: "http://localhost:5000" });
 
 API.interceptors.request.use((req) => {
   if (!!localStorage.getItem("profile")) {
@@ -34,10 +34,11 @@ export const fetchPost = async (id) => {
 };
 
 export const fetchPostsBySearch = async (searchQuery) => {
+  console.log("searchQueryapi", searchQuery);
   const { data } = await API.get(
     `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${
       searchQuery.tags
-    }&page=${searchQuery.page}`
+    }`
   );
   console.log("searchAPIData", data);
   return data;

@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
 
 export const getPosts = async (req, res) => {
-  console.log("req.query", req.query);
+  // console.log("req.query", req.query);
   const { page } = req.query;
   try {
     const Limit = 8;
     const startIndex = (Number(page) - 1) * Limit;
 
     const total = await PostMessage.countDocuments({});
-    console.log("totalpost", total);
+    // console.log("totalpost", total);
     const posts = await PostMessage.find()
       .sort({ _id: -1 })
       .limit(Limit)
@@ -32,15 +32,18 @@ export const getPost = async (req, res) => {
     const post = await PostMessage.findOne({ _id: id });
 
     res.status(200).json({ post });
+    // res.status(404).json({ message: "Something went wrong" });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
 export const getPostsBySearch = async (req, res) => {
+  // console.log("hit");
   const { searchQuery, tags } = req.query;
-  // console.log("req.querySSSSSSSS", req.query);
-  const { page } = req.query;
+
+  console.log("req.querySSSSSSSS", req.query);
+  // const { page } = req.query;
   // console.log("searchQuery", searchQuery.length);
   // console.log("tags", tags.length);
   try {

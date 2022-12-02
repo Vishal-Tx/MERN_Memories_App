@@ -13,7 +13,7 @@ const Page = ({ page, currentId, search, tags }) => {
 
   useEffect(() => {
     if (page) dispatch(getPosts(page));
-  }, [dispatch, page, currentId]);
+  }, [page, currentId]);
 
   return (
     <Pagination
@@ -23,6 +23,8 @@ const Page = ({ page, currentId, search, tags }) => {
       sx={{
         mt: "12px",
         py: "4px",
+        display: "flex",
+        justifyContent: "center",
       }}
       renderItem={(item) => (
         <PaginationItem

@@ -6,7 +6,6 @@ const url = "http://localhost:3001/posts";
 
 const initialState = {
   posts: [],
-  post: [],
   isLoading: true,
   error: null,
   currentPage: 1,

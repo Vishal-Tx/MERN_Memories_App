@@ -19,6 +19,7 @@ import { openModal } from "../../../features/modal/modalSlice";
 import { likePost } from "../../../features/api";
 import { update } from "../../../features/posts/postsSlice";
 import { useNavigate } from "react-router-dom";
+import "./styles.css";
 dayjs.extend(relativeTime);
 
 const Post = ({ post, setCurrentId }) => {
@@ -69,6 +70,7 @@ const Post = ({ post, setCurrentId }) => {
 
   return (
     <Card
+      className="card"
       raised
       elevation={6}
       sx={{
@@ -78,14 +80,21 @@ const Post = ({ post, setCurrentId }) => {
         borderRadius: "15px",
         height: "100%",
         position: "relative",
+
         // border: "0.5px solid rgba(0,0,0,0.45)",
         // boxShadow: "12px 12px 0.5px black",
       }}
     >
-      <ButtonBase onClick={openPost}>
+      <ButtonBase
+        onClick={openPost}
+        component="span"
+        name="test"
+        sx={{ display: "block", textAlign: "initial" }}
+      >
         <CardMedia
-          component="div"
+          className="cardMedia"
           sx={{
+            component: "div",
             height: 0,
             paddingTop: "56.25%",
             backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -95,7 +104,9 @@ const Post = ({ post, setCurrentId }) => {
           title={post.title}
           alt="memory_img"
         />
+
         <div
+          className="cardText"
           style={{
             position: "absolute",
             top: "20px",
