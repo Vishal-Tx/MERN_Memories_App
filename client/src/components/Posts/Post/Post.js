@@ -6,6 +6,7 @@ import {
   CardContent,
   Button,
   Typography,
+  ButtonBase,
 } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import * as dayjs from "dayjs";
@@ -17,10 +18,12 @@ import { useDispatch } from "react-redux";
 import { openModal } from "../../../features/modal/modalSlice";
 import { likePost } from "../../../features/api";
 import { update } from "../../../features/posts/postsSlice";
+import { useNavigate } from "react-router-dom";
 dayjs.extend(relativeTime);
 
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLike = async () => {
     const data = await likePost(post._id);
     dispatch(update(data));
@@ -28,6 +31,10 @@ const Post = ({ post, setCurrentId }) => {
   // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?.sub || user?.result?._id;
+
+  const openPost = () => {
+    navigate(`/posts/${post._id}`);
+  };
 
   // const { authData } = useSelector((store) => store.auth);
 
@@ -75,69 +82,73 @@ const Post = ({ post, setCurrentId }) => {
         // boxShadow: "12px 12px 0.5px black",
       }}
     >
-      <CardMedia
-        sx={{
-          height: 0,
-          paddingTop: "56.25%",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          backgroundBlendMode: "darken",
-        }}
-        image={post.selectedFile}
-        title={post.title}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          color: "white",
-        }}
-      >
-        <Typography variant="h6">{post.name}</Typography>
-        <Typography variant="body2">
-          {dayjs(post.createdAt).fromNow()}
+      <ButtonBase onClick={openPost}>
+        <CardMedia
+          component="div"
+          sx={{
+            height: 0,
+            paddingTop: "56.25%",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundBlendMode: "darken",
+          }}
+          image={post.selectedFile}
+          title={post.title}
+          alt="memory_img"
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: "20px",
+            left: "20px",
+            color: "white",
+          }}
+        >
+          <Typography variant="h6">{post.name}</Typography>
+          <Typography variant="body2">
+            {dayjs(post.createdAt).fromNow()}
+          </Typography>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            color: "white",
+          }}
+        >
+          {(post?.creator === user?.result?.sub ||
+            post?.creator === user?.result?._id) && (
+            <Button
+              style={{ color: "white" }}
+              size="small"
+              onClick={(e) => {
+                setCurrentId({ id: post._id, name: "update" });
+              }}
+            >
+              <MoreHorizIcon fontSize="medium" />
+            </Button>
+          )}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            margin: "20px",
+          }}
+        >
+          <Typography variant="body2" color="textSecondary">
+            {post.tags.map((tag) => `#${tag} `)}
+          </Typography>
+        </div>
+        <Typography sx={{ padding: "0 16px" }} variant="h5" gutterBottom>
+          {post.title}
         </Typography>
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          color: "white",
-        }}
-      >
-        {(post?.creator === user?.result?.sub ||
-          post?.creator === user?.result?._id) && (
-          <Button
-            style={{ color: "white" }}
-            size="small"
-            onClick={(e) => {
-              setCurrentId({ id: post._id, name: "update" });
-            }}
-          >
-            <MoreHorizIcon fontSize="medium" />
-          </Button>
-        )}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          margin: "20px",
-        }}
-      >
-        <Typography variant="body2" color="textSecondary">
-          {post.tags.map((tag) => `#${tag} `)}
-        </Typography>
-      </div>
-      <Typography sx={{ padding: "0 16px" }} variant="h5" gutterBottom>
-        {post.title}
-      </Typography>
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {post.message}
-        </Typography>
-      </CardContent>
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {post.message}
+          </Typography>
+        </CardContent>
+      </ButtonBase>
       <CardActions
         sx={{
           padding: "0 16px 8px 16px",

@@ -27,11 +27,17 @@ export const fetchPosts = async (page) => {
   return data;
 };
 
+export const fetchPost = async (id) => {
+  const { data } = await API.get(`/posts/${id}`);
+  console.log("individualpostfromBack", data);
+  return data;
+};
+
 export const fetchPostsBySearch = async (searchQuery) => {
   const { data } = await API.get(
     `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${
       searchQuery.tags
-    }`
+    }&page=${searchQuery.page}`
   );
   console.log("searchAPIData", data);
   return data;

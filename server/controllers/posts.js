@@ -26,11 +26,23 @@ export const getPosts = async (req, res) => {
   }
 };
 
+export const getPost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await PostMessage.findOne({ _id: id });
+
+    res.status(200).json({ post });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const getPostsBySearch = async (req, res) => {
   const { searchQuery, tags } = req.query;
-  console.log(req.query);
-  console.log("searchQuery", searchQuery.length);
-  console.log("tags", tags.length);
+  // console.log("req.querySSSSSSSS", req.query);
+  const { page } = req.query;
+  // console.log("searchQuery", searchQuery.length);
+  // console.log("tags", tags.length);
   try {
     const title = new RegExp(searchQuery, "i");
 
@@ -40,15 +52,17 @@ export const getPostsBySearch = async (req, res) => {
     //   });
     //   res.status(200).json({ posts });
     // } else {
+
     const posts = await PostMessage.find({
       $or: [{ title }, { tags: { $in: tags.split(",") } }],
     });
 
-    console.log("posts", posts);
     if (!posts.length) {
       res.status(404).json({ message: "No posts found" });
     } else {
-      res.status(200).json({ posts });
+      res.status(200).json({
+        posts,
+      });
     }
     // }
   } catch (error) {

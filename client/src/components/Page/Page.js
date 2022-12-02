@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { getPosts } from "../../features/posts/postsSlice";
 
-const Page = ({ page, currentId }) => {
+const Page = ({ page, currentId, search, tags }) => {
   const dispatch = useDispatch();
   const { currentPage, numberOfPages } = useSelector((state) => state.posts);
   console.log(currentPage, numberOfPages);

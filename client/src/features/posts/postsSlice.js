@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { fetchPosts, fetchPostsBySearch } from "../api";
+import { fetchPosts, fetchPostsBySearch, fetchPost } from "../api";
 
 const url = "http://localhost:3001/posts";
 
 const initialState = {
   posts: [],
+  post: [],
   isLoading: true,
   error: null,
   currentPage: 1,
@@ -20,6 +21,23 @@ export const getPosts = createAsyncThunk(
       const res = await fetchPosts(page);
       console.log("allres", res);
       return res;
+    } catch (error) {
+      const {
+        response: { data, status },
+      } = error;
+      console.log("fetcherror", error);
+      return thunkAPI.rejectWithValue({ data, status });
+    }
+  }
+);
+
+export const getPost = createAsyncThunk(
+  "posts/getPost",
+  async (id, thunkAPI) => {
+    try {
+      const { post } = await fetchPost(id);
+      console.log("sliceres", post);
+      return post;
     } catch (error) {
       const {
         response: { data, status },
@@ -89,6 +107,24 @@ const postsSlice = createSlice({
       state.error = null;
     },
     [getPosts.rejected]: (state, action) => {
+      console.log("Raction", action);
+      state.isLoading = false;
+      state.error = action.payload;
+      console.log("rejected");
+    },
+
+    [getPost.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [getPost.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.post = action.payload;
+      console.log("allposts", action.payload);
+      console.log("state.posts", state.posts);
+      console.log("state.post", state.post);
+      state.error = null;
+    },
+    [getPost.rejected]: (state, action) => {
       console.log("Raction", action);
       state.isLoading = false;
       state.error = action.payload;

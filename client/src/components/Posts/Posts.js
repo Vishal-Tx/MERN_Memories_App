@@ -2,6 +2,7 @@ import React from "react";
 import Post from "./Post/Post";
 import { useSelector } from "react-redux";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import Errorhandler from "../Errorhandler";
 
 function Posts({ setCurrentId }) {
   const { posts, isLoading, error } = useSelector((store) => store.posts);
@@ -34,18 +35,7 @@ function Posts({ setCurrentId }) {
       ))}
     </Grid>
   ) : (
-    <Box
-      sx={{
-        height: "100vh",
-      }}
-    >
-      <Typography sx={{ color: "#1565c0", fontSize: "100px" }} align="center">
-        {error.status}
-      </Typography>
-      <Typography sx={{ color: "#1565c0", fontSize: "80px" }} align="center">
-        {error?.data?.message ? error?.data?.message : "Try Refresh"}
-      </Typography>
-    </Box>
+    <Errorhandler error={error} />
   );
 }
 
