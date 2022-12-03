@@ -31,7 +31,7 @@
   background-color: transparent;
 }
 
-.commentsOuterContainer {
+/* .commentsOuterContainer {
   display: flex;
   justify-content: space-between;
 }
@@ -40,7 +40,7 @@
   height: 200px;
   overflow-y: auto;
   margin-right: 30px;
-}
+} */
 
 @media only screen and (max-width: 600px) {
   .card {

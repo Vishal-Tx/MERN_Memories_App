@@ -42,7 +42,7 @@ export const getPostsBySearch = async (req, res) => {
   // console.log("hit");
   const { searchQuery, tags } = req.query;
 
-  console.log("req.querySSSSSSSS", req.query);
+  // console.log("req.querySSSSSSSS", req.query);
   // const { page } = req.query;
   // console.log("searchQuery", searchQuery.length);
   // console.log("tags", tags.length);
