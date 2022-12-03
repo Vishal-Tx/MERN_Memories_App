@@ -127,6 +127,7 @@ const PostDetails = () => {
             {recommendedPosts.map(
               ({ title, name, message, likes, selectedFile, _id }) => (
                 <Card
+                  key={_id}
                   raised
                   elevation={6}
                   sx={{
@@ -136,7 +137,7 @@ const PostDetails = () => {
                     borderRadius: "15px",
                     height: "100%",
                     position: "relative",
-                    m: "20px",
+                    m: "20px auto",
                     width: "400px",
                     // border: "0.5px solid rgba(0,0,0,0.45)",
                     // boxShadow: "12px 12px 0.5px black",
@@ -155,15 +156,13 @@ const PostDetails = () => {
                         component: "img",
                         height: 0,
                         paddingTop: "56.25%",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        backgroundBlendMode: "darken",
                       }}
-                      image={post.selectedFile}
-                      title={post.title}
+                      image={selectedFile}
+                      title={title}
                       alt="memory_img"
                     />
 
-                    <div
+                    {/* <div
                       style={{
                         position: "absolute",
                         top: "20px",
@@ -171,13 +170,10 @@ const PostDetails = () => {
                         color: "white",
                       }}
                     >
-                      <Typography variant="h6">{post.name}</Typography>
-                      <Typography variant="body2">
-                        {dayjs(post.createdAt).fromNow()}
-                      </Typography>
-                    </div>
+                      <Typography variant="h6">{name}</Typography>
+                    </div> */}
 
-                    <div
+                    {/* <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -185,15 +181,23 @@ const PostDetails = () => {
                       }}
                     >
                       <Typography variant="body2" color="textSecondary">
-                        {post.tags.map((tag) => `#${tag} `)}
+                        {tags.map((tag) => `#${tag} `)}
                       </Typography>
-                    </div>
+                    </div> */}
                     <Typography
-                      sx={{ padding: "0 16px" }}
+                      sx={{ padding: "14px 16px" }}
                       variant="h5"
                       gutterBottom
                     >
-                      {post.title}
+                      {title}
+                    </Typography>
+                    <Typography
+                      sx={{ padding: "4px 16px" }}
+                      variant="body2"
+                      gutterBottom
+                      color="textSecondary"
+                    >
+                      By:- {name}
                     </Typography>
                     <CardContent>
                       <Typography
@@ -201,7 +205,7 @@ const PostDetails = () => {
                         color="textSecondary"
                         component="p"
                       >
-                        {post.message}
+                        {message}
                       </Typography>
                     </CardContent>
                   </ButtonBase>

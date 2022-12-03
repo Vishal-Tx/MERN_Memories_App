@@ -89,7 +89,7 @@ const Post = ({ post, setCurrentId }) => {
         onClick={openPost}
         component="span"
         name="test"
-        sx={{ display: "block", textAlign: "initial" }}
+        sx={{ display: "inline-block", textAlign: "initial" }}
       >
         <CardMedia
           className="cardMedia"
@@ -119,16 +119,16 @@ const Post = ({ post, setCurrentId }) => {
             {dayjs(post.createdAt).fromNow()}
           </Typography>
         </div>
-        <div
-          style={{
-            position: "absolute",
-            top: "20px",
-            right: "20px",
-            color: "white",
-          }}
-        >
-          {(post?.creator === user?.result?.sub ||
-            post?.creator === user?.result?._id) && (
+        {(post?.creator === user?.result?.sub ||
+          post?.creator === user?.result?._id) && (
+          <div
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "20px",
+              color: "white",
+            }}
+          >
             <Button
               style={{ color: "white" }}
               size="small"
@@ -138,8 +138,8 @@ const Post = ({ post, setCurrentId }) => {
             >
               <MoreHorizIcon fontSize="medium" />
             </Button>
-          )}
-        </div>
+          </div>
+        )}
         <div
           style={{
             display: "flex",

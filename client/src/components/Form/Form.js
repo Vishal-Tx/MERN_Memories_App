@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { postPost, updatePost } from "../../features/api";
 import { create, update } from "../../features/posts/postsSlice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Form({ currentId, setCurrentId }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [postData, setPostData] = useState({
     title: "",
     message: "",
@@ -63,6 +65,7 @@ function Form({ currentId, setCurrentId }) {
       const data = await postPost({ ...postData, name: user?.result?.name });
       console.log("udata", data);
       dispatch(create(data));
+      navigate(`/posts/${data._id}`);
       if (data) toast.success(`Successfully created the Memory.`);
     }
     console.log("hitclear");
