@@ -136,3 +136,22 @@ export const likePost = async (req, res) => {
   await likePost.save();
   res.json(likePost);
 };
+
+export const commentPost = async (req, res) => {
+  const { id: _id } = req.params;
+  const comment = req.body;
+
+  if (!req.userId)
+    return res.json({ message: "Unauthenticated!, Please Login First." });
+
+  if (!mongoose.isValidObjectId(_id)) {
+    return res.status(404).send("No post with that ID");
+  }
+
+  try {
+    const commentPost = await PostMessage.findById(_id);
+    commentPost.comment.push(comment);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};

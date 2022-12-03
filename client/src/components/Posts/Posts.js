@@ -1,7 +1,7 @@
 import React from "react";
 import Post from "./Post/Post";
 import { useSelector } from "react-redux";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import Errorhandler from "../Errorhandler";
 
 function Posts({ setCurrentId }) {

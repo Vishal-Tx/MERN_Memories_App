@@ -12,6 +12,17 @@ const postSchema = new Schema({
     type: [String],
     default: [],
   },
+  comments: [
+    {
+      commentCreator: { type: String },
+      commentBody: { type: String },
+      commentDate: { type: Date, default: Date.now },
+      likes: {
+        type: [String],
+        default: [],
+      },
+    },
+  ],
   createdAt: { type: Date, default: Date.now },
 });
 
