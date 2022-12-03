@@ -152,10 +152,13 @@ const PostDetails = () => {
                     sx={{ display: "block", textAlign: "initial" }}
                   >
                     <CardMedia
+                      className="recommendedPostsImage"
                       sx={{
-                        component: "img",
+                        component: "div",
                         height: 0,
                         paddingTop: "56.25%",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        backgroundBlendMode: "darken",
                       }}
                       image={selectedFile}
                       title={title}

@@ -119,7 +119,7 @@ const Post = ({ post, setCurrentId }) => {
             {dayjs(post.createdAt).fromNow()}
           </Typography>
         </div>
-        {(post?.creator === user?.result?.sub ||
+        {/* {(post?.creator === user?.result?.sub ||
           post?.creator === user?.result?._id) && (
           <div
             style={{
@@ -139,7 +139,7 @@ const Post = ({ post, setCurrentId }) => {
               <MoreHorizIcon fontSize="medium" />
             </Button>
           </div>
-        )}
+        )} */}
         <div
           style={{
             display: "flex",
@@ -154,12 +154,33 @@ const Post = ({ post, setCurrentId }) => {
         <Typography sx={{ padding: "0 16px" }} variant="h5" gutterBottom>
           {post.title}
         </Typography>
+
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
             {post.message}
           </Typography>
         </CardContent>
       </ButtonBase>
+      {(post?.creator === user?.result?.sub ||
+        post?.creator === user?.result?._id) && (
+        <div
+          title="update Memory"
+          style={{
+            position: "relative",
+            margin: "auto",
+          }}
+        >
+          <Button
+            style={{ color: "black" }}
+            size="small"
+            onClick={(e) => {
+              setCurrentId({ id: post._id, name: "update" });
+            }}
+          >
+            <MoreHorizIcon fontSize="medium" />
+          </Button>
+        </div>
+      )}
       <CardActions
         sx={{
           padding: "0 16px 8px 16px",
