@@ -51,7 +51,7 @@ const CommentSection = ({ post }) => {
           <Divider style={{ margin: "20px 0" }} />
         </div>
         {post?.comments.map((comment) => (
-          <Comments key={comment._id} {...comment} />
+          <Comments key={comment._id} comment={comment} />
         ))}
       </div>
     </div>

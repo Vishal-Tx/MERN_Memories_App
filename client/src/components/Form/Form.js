@@ -62,7 +62,7 @@ function Form({ currentId, setCurrentId }) {
 
       if (data) toast.success(`Successfully updated the Memory.`);
     } else {
-      const data = await postPost({ ...postData, name: user?.result?.name });
+      const data = await postPost({ ...postData });
       console.log("udata", data);
       dispatch(create(data));
       navigate(`/posts/${data._id}`);

@@ -114,7 +114,9 @@ const Post = ({ post, setCurrentId }) => {
             color: "white",
           }}
         >
-          <Typography variant="h6">{post.name}</Typography>
+          <Typography variant="h6">
+            {post?.creator?.name?.split(" ")[0]}
+          </Typography>
           <Typography variant="body2">
             {dayjs(post.createdAt).fromNow()}
           </Typography>
@@ -161,8 +163,8 @@ const Post = ({ post, setCurrentId }) => {
           </Typography>
         </CardContent>
       </ButtonBase>
-      {(post?.creator === user?.result?.sub ||
-        post?.creator === user?.result?._id) && (
+      {(post?.creator._id === user?.result?.sub ||
+        post?.creator._id === user?.result?._id) && (
         <div
           title="update Memory"
           style={{
@@ -197,8 +199,8 @@ const Post = ({ post, setCurrentId }) => {
           <Likes />
         </Button>
 
-        {(post?.creator === user?.result?.sub ||
-          post?.creator === user?.result?._id) && (
+        {(post?.creator._id === user?.result?.sub ||
+          post?.creator._id === user?.result?._id) && (
           <Button
             size="small"
             color="error"

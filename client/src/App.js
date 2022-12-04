@@ -7,7 +7,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { Navbar, Home, Auth, PostDetails } from "./components";
+import { Navbar, Home, Auth, PostDetails, UserDetails } from "./components";
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
@@ -26,6 +26,8 @@ const App = () => {
             exact
             element={!user ? <Auth /> : <Navigate to="/posts" />}
           />
+
+          <Route path="/user/:id" exact element={<UserDetails />} />
         </Routes>
       </Container>
     </Router>

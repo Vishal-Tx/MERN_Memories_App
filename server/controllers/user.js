@@ -59,3 +59,18 @@ export const signup = async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const getUser = async (req, res) => {
+  const { id: _id } = req.params;
+  try {
+    const user = await User.findById(_id);
+    console.log("user", user);
+    if (!user) {
+      return res.status(404).json({ message: "User doesn't exist." });
+    }
+    const { name, email } = user;
+    return res.status(200).json({ data: { name, email } });
+  } catch (err) {
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};

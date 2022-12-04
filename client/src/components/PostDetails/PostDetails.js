@@ -71,7 +71,7 @@ const PostDetails = () => {
       alignItems="stretch"
       spacing={3}
     >
-      <Grow in={post}>
+      <Grow in={true}>
         <Grid item xs={12} sm={12} md={isOpen ? 9 : 12}>
           <Paper
             sx={{
@@ -117,7 +117,7 @@ const PostDetails = () => {
                     to={`/creators/${post.name}`}
                     style={{ textDecoration: "none", color: "#3f51b5" }}
                   >
-                    {` ${post.name}`}
+                    {` ${post.creator.name}`}
                   </Link>
                 </Typography>
                 <Typography variant="body1">
@@ -155,7 +155,7 @@ const PostDetails = () => {
           </Paper>
         </Grid>
       </Grow>
-      <Grow in={isOpen}>
+      <Grow in={!!isOpen}>
         <Grid item xs={12} sm={12} md={3}>
           {!!recommendedPosts.length ? (
             <Paper

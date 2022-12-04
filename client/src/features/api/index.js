@@ -82,3 +82,9 @@ export const signup = async (formData) => {
   console.log("SignupData", data);
   return data;
 };
+
+export const fetchUser = async (id) => {
+  const { data } = await API.get(`/user/${id}`);
+  console.log("user", data);
+  return data;
+};

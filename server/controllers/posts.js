@@ -11,6 +11,11 @@ export const getPosts = async (req, res) => {
     const total = await PostMessage.countDocuments({});
     // console.log("totalpost", total);
     const posts = await PostMessage.find()
+      .populate({ path: "creator", select: "-password" })
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password" },
+      })
       .sort({ _id: -1 })
       .limit(Limit)
       .skip(startIndex);
@@ -29,7 +34,12 @@ export const getPosts = async (req, res) => {
 export const getPost = async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await PostMessage.findOne({ _id: id });
+    const post = await PostMessage.findOne({ _id: id })
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password" },
+      });
 
     res.status(200).json({ post });
     // res.status(404).json({ message: "Something went wrong" });
@@ -123,7 +133,7 @@ export const likePost = async (req, res) => {
   if (!mongoose.isValidObjectId(_id)) {
     return res.status(404).send("No post with that ID");
   }
-  const likePost = await PostMessage.findById(_id);
+  const likePost = await PostMessage.findById(_id).populate("creator");
   const index = likePost.likes.findIndex((id) => id === String(req.userId));
 
   if (index === -1) {
@@ -149,7 +159,7 @@ export const commentPost = async (req, res) => {
   }
 
   try {
-    const commentPost = await PostMessage.findById(_id);
+    const commentPost = await PostMessage.findById(_id).populate("creator");
     commentPost.comment.push(comment);
   } catch (error) {
     res.status(409).json({ message: error.message });
