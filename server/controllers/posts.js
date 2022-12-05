@@ -128,8 +128,8 @@ export const deletePost = async (req, res) => {
   try {
     const post = await PostMessage.findById(_id).populate("creator");
 
-    console.log("post.creator._id", post.creator._id);
-    if (post.creator._id.equals(req.userId)) {
+    console.log("post.creator._id", post);
+    if (post.creator._id.equals(req.userId) || post.creator.sub) {
       console.log("gonna delete");
       if (!mongoose.isValidObjectId(_id)) {
         return res.status(404).send("No post with that ID");
