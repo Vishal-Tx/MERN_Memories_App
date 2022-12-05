@@ -60,6 +60,64 @@ export const signup = async (req, res) => {
   }
 };
 
+export const signinGoogle = async (req, res) => {
+  // console.log("req.body", req.body);
+  try {
+    const decodedData = jwt.decode(req.body.data);
+    console.log("decodedData", decodedData);
+    const { email, name, sub, picture } = decodedData;
+
+    const existingUser = await User.findOne({ sub });
+
+    if (existingUser) {
+      console.log("existingUser", existingUser);
+      existingUser.name = name;
+      existingUser.picture = picture;
+      await existingUser.save();
+      const token = jwt.sign(
+        {
+          email: existingUser.email,
+          id: existingUser._id,
+          sub: existingUser.sub,
+        },
+        secret,
+        { expiresIn: "1h" }
+      );
+      const result = {
+        email: existingUser.email,
+        name: existingUser.name,
+        picture: existingUser.picture,
+        _id: existingUser._id,
+      };
+      return res.status(200).json({ result: result, token });
+    }
+
+    const newUser = await User.create({
+      email,
+      sub,
+      name,
+      picture,
+    });
+
+    await newUser.save();
+    const token = jwt.sign(
+      { email: newUser.email, id: newUser._id, sub: newUser.sub },
+      secret,
+      { expiresIn: "1h" }
+    );
+    const result = {
+      email: newUser.email,
+      name: newUser.name,
+      picture: newUser.picture,
+      id: newUser._id,
+    };
+    return res.status(200).json({ result: result, token });
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: "invalid" });
+  }
+};
+
 export const getUser = async (req, res) => {
   const { id: _id } = req.params;
   try {

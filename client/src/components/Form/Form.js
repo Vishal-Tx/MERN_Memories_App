@@ -56,17 +56,27 @@ function Form({ currentId, setCurrentId }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentId.id && currentId.name === "update") {
-      const data = await updatePost(currentId.id, postData);
-      console.log("udata", data);
-      dispatch(update(data));
-
-      if (data) toast.success(`Successfully updated the Memory.`);
+      // const data = await updatePost(currentId.id, postData);
+      const data = await toast.promise(updatePost(currentId.id, postData), {
+        pending: "Updating...",
+        success: `Memory Updated Successfully!`,
+        error: "Something Went Wrong!",
+      });
+      // console.log("udata", data);
+      if (data) dispatch(update(data));
     } else {
-      const data = await postPost({ ...postData });
-      console.log("udata", data);
-      dispatch(create(data));
-      navigate(`/posts/${data._id}`);
-      if (data) toast.success(`Successfully created the Memory.`);
+      // const data = await postPost({ ...postData });
+      const data = await toast.promise(postPost({ ...postData }), {
+        pending: "Creating...",
+        success: `Memory created Successfully!`,
+        error: "Something Went Wrong!",
+      });
+      // console.log("udata", data);
+      if (data) {
+        dispatch(create(data));
+        navigate(`/posts/${data._id}`);
+        // if (data) toast.success(`Successfully created the Memory.`);
+      }
     }
     console.log("hitclear");
     clear();

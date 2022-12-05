@@ -1,7 +1,12 @@
+import { Typography } from "@mui/material";
 import React from "react";
 
 const UserDetails = () => {
-  return <div>UserDetails</div>;
+  return (
+    <>
+      <Typography color="secondary">UserDetails</Typography>
+    </>
+  );
 };
 
 export default UserDetails;

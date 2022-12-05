@@ -114,7 +114,7 @@ const PostDetails = () => {
                 <Typography variant="h6">
                   Created by:
                   <Link
-                    to={`/creators/${post.name}`}
+                    to={`/user/${post.creator._id}`}
                     style={{ textDecoration: "none", color: "#3f51b5" }}
                   >
                     {` ${post.creator.name}`}

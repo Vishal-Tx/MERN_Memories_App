@@ -11,7 +11,7 @@ export const getPosts = async (req, res) => {
     const total = await PostMessage.countDocuments({});
     // console.log("totalpost", total);
     const posts = await PostMessage.find()
-      .populate({ path: "creator", select: "-password" })
+      .populate({ path: "creator", select: "-password -sub" })
       .populate({
         path: "comments",
         populate: { path: "author", select: "-password" },
@@ -38,7 +38,7 @@ export const getPost = async (req, res) => {
       .populate("creator")
       .populate({
         path: "comments",
-        populate: { path: "author", select: "-password" },
+        populate: { path: "author", select: "-password -sub" },
       });
 
     res.status(200).json({ post });
@@ -68,7 +68,12 @@ export const getPostsBySearch = async (req, res) => {
 
     const posts = await PostMessage.find({
       $or: [{ title }, { tags: { $in: tags.split(",") } }],
-    });
+    })
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password -sub" },
+      });
 
     if (!posts.length) {
       res.status(404).json({ message: "No posts found" });
@@ -86,17 +91,18 @@ export const getPostsBySearch = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const post = req.body;
-
-  const newPost = new PostMessage({
-    ...post,
-    creator: req.userId,
-    createdAt: new Date().toISOString(),
-  });
   try {
-    await newPost.save();
+    const newPost = new PostMessage(post);
+    newPost.creator = req.userId;
+    newPost.createdAt = new Date().toISOString();
+    console.log("req.userId", req.userId);
+    console.log("newPost", newPost);
 
-    res.status(201).json(newPost);
+    await newPost.save();
+    console.log("newPost", newPost);
+    res.status(200).json(newPost);
   } catch (error) {
+    console.log("error");
     res.status(409).json({ message: error.message });
   }
 };
@@ -117,12 +123,24 @@ export const updatePost = async (req, res) => {
 
 export const deletePost = async (req, res) => {
   const { id: _id } = req.params;
+  console.log(`deleting post`);
+  console.log("req.userId", req.userId);
+  try {
+    const post = await PostMessage.findById(_id).populate("creator");
 
-  if (!mongoose.isValidObjectId(_id)) {
-    return res.status(404).send("No post with that ID");
+    console.log("post.creator._id", post.creator._id);
+    if (post.creator._id.equals(req.userId)) {
+      console.log("gonna delete");
+      if (!mongoose.isValidObjectId(_id)) {
+        return res.status(404).send("No post with that ID");
+      }
+
+      await PostMessage.findByIdAndDelete(_id);
+      res.json({ message: "post deleted successfully" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  await PostMessage.findByIdAndDelete(_id);
-  res.json({ message: "post deleted successfully" });
 };
 
 export const likePost = async (req, res) => {
@@ -133,7 +151,12 @@ export const likePost = async (req, res) => {
   if (!mongoose.isValidObjectId(_id)) {
     return res.status(404).send("No post with that ID");
   }
-  const likePost = await PostMessage.findById(_id).populate("creator");
+  const likePost = await PostMessage.findById(_id)
+    .populate("creator")
+    .populate({
+      path: "comments",
+      populate: { path: "author", select: "-password" },
+    });
   const index = likePost.likes.findIndex((id) => id === String(req.userId));
 
   if (index === -1) {

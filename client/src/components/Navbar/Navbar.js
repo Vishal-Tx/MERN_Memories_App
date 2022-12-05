@@ -35,8 +35,8 @@ const Navbar = () => {
     navigate("/");
   };
 
-  const token = user?.token;
   useEffect(() => {
+    const token = user?.token;
     if (token) {
       const decodedToken = jwt_decode(token);
 
@@ -116,8 +116,9 @@ const Navbar = () => {
           </Box>
         ) : (
           <Button
-            component={Link}
-            to="/auth"
+            onClick={() => {
+              navigate("/auth");
+            }}
             variant="contained"
             color="primary"
           >

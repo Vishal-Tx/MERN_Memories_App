@@ -31,7 +31,7 @@ const Post = ({ post, setCurrentId }) => {
   };
   // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const user = JSON.parse(localStorage.getItem("profile"));
-  const userId = user?.result?.sub || user?.result?._id;
+  const userId = user?.result?._id;
 
   const openPost = () => {
     navigate(`/posts/${post._id}`);
@@ -99,6 +99,7 @@ const Post = ({ post, setCurrentId }) => {
             paddingTop: "56.25%",
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             backgroundBlendMode: "darken",
+            borderRadius: "15px 15px 0 0",
           }}
           image={post.selectedFile}
           title={post.title}
@@ -163,8 +164,7 @@ const Post = ({ post, setCurrentId }) => {
           </Typography>
         </CardContent>
       </ButtonBase>
-      {(post?.creator._id === user?.result?.sub ||
-        post?.creator._id === user?.result?._id) && (
+      {post?.creator._id === user?.result?._id && (
         <div
           title="update Memory"
           style={{
@@ -199,8 +199,7 @@ const Post = ({ post, setCurrentId }) => {
           <Likes />
         </Button>
 
-        {(post?.creator._id === user?.result?.sub ||
-          post?.creator._id === user?.result?._id) && (
+        {post?.creator._id === user?.result?._id && (
           <Button
             size="small"
             color="error"

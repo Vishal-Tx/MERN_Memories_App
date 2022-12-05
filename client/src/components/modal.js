@@ -25,13 +25,17 @@ export default function AlertDialog({ currentId, setCurrentId }) {
   });
 
   const handleDeleteClick = async (id) => {
-    const data = await deletePost(id);
+    // const data = await deletePost(id);
     // console.log("datadelete", data);
+    const data = await toast.promise(deletePost(id), {
+      pending: "Deleting!",
+      success: `File Deleted Successfully!`,
+      error: "Something Went Wrong!",
+    });
     if (data) {
       dispatch(closeModal());
       dispatch(remove(data));
       setCurrentId({ id: null, name: "" });
-      toast.success(`Successfully deleted the Memory.`);
     }
   };
   return (

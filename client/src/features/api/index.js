@@ -83,6 +83,13 @@ export const signup = async (formData) => {
   return data;
 };
 
+export const signinGoogle = async (gData) => {
+  // console.log("signinGoogle", gData);
+  const { data } = await API.post("/user/signinGoogle", { data: gData });
+  console.log("googleSignin", data);
+  return data;
+};
+
 export const fetchUser = async (id) => {
   const { data } = await API.get(`/user/${id}`);
   console.log("user", data);

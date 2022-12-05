@@ -15,7 +15,7 @@ import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { LogIn } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { signin, signup } from "../../features/api/";
+import { signin, signup, signinGoogle } from "../../features/api/";
 import { toast } from "react-toastify";
 
 const Auth = () => {
@@ -46,7 +46,7 @@ const Auth = () => {
     } else {
       try {
         const signinRes = await signin(formData);
-        console.log("signin", signinRes);
+        console.log("signinRRRRRRRRRRR", signinRes);
         dispatch(LogIn(signinRes));
         navigate("/");
       } catch (error) {
@@ -66,16 +66,21 @@ const Auth = () => {
     setIsSignUp((prevState) => !prevState);
   };
 
-  const googleSuccess = (res) => {
-    const googleResponse = jwt_decode(res?.credential);
-    console.log("result", googleResponse);
-    const { name, picture, sub } = googleResponse;
-    const gLoginData = {
-      result: { name, picture, sub },
-      token: res?.credential,
-    };
-    dispatch(LogIn(gLoginData));
-    navigate("/");
+  const googleSuccess = async (res) => {
+    // const googleResponse = jwt_decode(res?.credential);
+    try {
+      const googleResponse = await signinGoogle(res?.credential);
+
+      console.log("result", googleResponse);
+      const gLoginData = {
+        result: googleResponse.result,
+        token: googleResponse.token,
+      };
+      dispatch(LogIn(gLoginData));
+      navigate("/");
+    } catch (error) {
+      toast.error(error?.response?.data.message);
+    }
   };
   return (
     <Container component="main" maxWidth="xs">

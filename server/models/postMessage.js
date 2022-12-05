@@ -58,8 +58,8 @@ postSchema.post("findOneAndDelete", async (doc) => {
     //     });
     //   }
     // }
-    console.log("deleted log");
-    console.log("comment", commentSchema);
+    // console.log("deleted log");
+    // console.log("comment", commentSchema);
   }
 });
 
