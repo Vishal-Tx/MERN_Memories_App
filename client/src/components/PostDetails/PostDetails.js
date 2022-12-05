@@ -51,6 +51,7 @@ const PostDetails = () => {
   if (!post) return null;
 
   const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+  // console.log("recommendedPosts", recommendedPosts);
 
   return isLoading ? (
     <div
@@ -178,7 +179,7 @@ const PostDetails = () => {
                 <Divider />
                 <div className="recommendedPosts">
                   {recommendedPosts.map(
-                    ({ title, name, message, likes, selectedFile, _id }) => (
+                    ({ title, creator, message, likes, selectedFile, _id }) => (
                       <Card
                         key={_id}
                         raised
@@ -231,7 +232,7 @@ const PostDetails = () => {
                             gutterBottom
                             color="textSecondary"
                           >
-                            By:- {name}
+                            By:- {creator.name}
                           </Typography>
                           <CardContent>
                             <Typography

@@ -109,7 +109,7 @@ export const signinGoogle = async (req, res) => {
       email: newUser.email,
       name: newUser.name,
       picture: newUser.picture,
-      id: newUser._id,
+      _id: newUser._id,
     };
     return res.status(200).json({ result: result, token });
   } catch (error) {

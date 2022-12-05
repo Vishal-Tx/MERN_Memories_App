@@ -35,7 +35,12 @@ const Auth = () => {
     // console.log("formData", formData);
     if (isSignUp) {
       try {
-        const signupRes = await signup(formData);
+        // const signupRes = await signup(formData);
+        const signupRes = await toast.promise(signup(formData), {
+          pending: "Hang on...",
+          success: `Account Created Successfully!`,
+          error: "Something Went Wrong!",
+        });
         // console.log("signup", signupRes);
         dispatch(LogIn(signupRes));
         navigate("/");
@@ -45,7 +50,12 @@ const Auth = () => {
       }
     } else {
       try {
-        const signinRes = await signin(formData);
+        // const signinRes = await signin(formData);
+        const signinRes = await toast.promise(signin(formData), {
+          pending: "Hang on...",
+          success: `Logged in Successfully!`,
+          error: "Something Went Wrong!",
+        });
         console.log("signinRRRRRRRRRRR", signinRes);
         dispatch(LogIn(signinRes));
         navigate("/");
@@ -69,7 +79,15 @@ const Auth = () => {
   const googleSuccess = async (res) => {
     // const googleResponse = jwt_decode(res?.credential);
     try {
-      const googleResponse = await signinGoogle(res?.credential);
+      // const googleResponse = await signinGoogle(res?.credential);
+      const googleResponse = await toast.promise(
+        signinGoogle(res?.credential),
+        {
+          pending: "Hang on...",
+          success: `Logged in Successfully!`,
+          error: "Something Went Wrong!",
+        }
+      );
 
       console.log("result", googleResponse);
       const gLoginData = {
