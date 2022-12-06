@@ -20,6 +20,7 @@ import { likePost } from "../../../features/api";
 import { update } from "../../../features/posts/postsSlice";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
+import Likes from "./Likes";
 dayjs.extend(relativeTime);
 
 const Post = ({ post, setCurrentId }) => {
@@ -43,30 +44,30 @@ const Post = ({ post, setCurrentId }) => {
   //   setUser(JSON.parse(localStorage.getItem("profile")));
   // }, [authData]);
 
-  const Likes = () => {
-    if (post.likes.length > 0) {
-      return post.likes.find((like) => like === userId) ? (
-        <>
-          <ThumbUpIcon fontSize="small" sx={{ mr: "4px" }} />
-          &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
-        </>
-      ) : (
-        <>
-          <ThumbUpOffAltIcon fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
-        </>
-      );
-    }
-    return (
-      <>
-        <ThumbUpOffAltIcon fontSize="small" />
-        &nbsp;Like
-      </>
-    );
-  };
+  // const Likes = () => {
+  //   if (post.likes.length > 0) {
+  //     return post.likes.find((like) => like === userId) ? (
+  //       <>
+  //         <ThumbUpIcon fontSize="small" sx={{ mr: "4px" }} />
+  //         &nbsp;
+  //         {post.likes.length > 2
+  //           ? `You and ${post.likes.length - 1} others`
+  //           : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+  //       </>
+  //     ) : (
+  //       <>
+  //         <ThumbUpOffAltIcon fontSize="small" />
+  //         &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+  //       </>
+  //     );
+  //   }
+  //   return (
+  //     <>
+  //       <ThumbUpOffAltIcon fontSize="small" />
+  //       &nbsp;Like
+  //     </>
+  //   );
+  // };
 
   return (
     <Card
@@ -196,7 +197,7 @@ const Post = ({ post, setCurrentId }) => {
           onClick={handleLike}
           disabled={!user?.result}
         >
-          <Likes />
+          <Likes post={post} userId={userId} />
         </Button>
 
         {post?.creator._id === user?.result?._id && (

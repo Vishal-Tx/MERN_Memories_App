@@ -116,7 +116,12 @@ export const updatePost = async (req, res) => {
   }
   const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
     new: true,
-  });
+  })
+    .populate("creator")
+    .populate({
+      path: "comments",
+      populate: { path: "author", select: "-password -sub" },
+    });
   await updatedPost.save();
   res.json(updatedPost);
 };

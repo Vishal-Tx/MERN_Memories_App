@@ -77,9 +77,11 @@ const postsSlice = createSlice({
       state.posts = [...state.posts, action.payload];
     },
     update: (state, action) => {
+      console.log("actionLike", action.payload);
       state.posts = state.posts.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
+      state.post = action.payload;
     },
     remove: (state, action) => {
       state.posts = state.posts.filter(

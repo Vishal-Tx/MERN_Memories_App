@@ -65,6 +65,7 @@ export const deletePost = async (id) => {
 export const likePost = async (id) => {
   try {
     const { data } = await API.patch(`/posts/${id}/likePost`);
+    console.log("APiLike", data);
     return data;
   } catch (error) {
     console.log("errer", error);

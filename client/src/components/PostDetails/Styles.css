@@ -42,6 +42,10 @@
   margin-right: 30px;
 } */
 
+/* .closeButton {
+  background-color: yellowgreen;
+} */
+
 @media only screen and (max-width: 600px) {
   .card {
     flex-direction: column-reverse;

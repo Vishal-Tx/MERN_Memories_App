@@ -7,7 +7,7 @@ import { create, update } from "../../features/posts/postsSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-function Form({ currentId, setCurrentId }) {
+function Form({ currentId, setCurrentId, setUpdateForm }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [postData, setPostData] = useState({
@@ -51,6 +51,7 @@ function Form({ currentId, setCurrentId }) {
     });
     inputRef.current.value = null;
     console.log("clear3");
+    if (setUpdateForm) setUpdateForm(false);
   };
 
   const handleSubmit = async (e) => {
@@ -95,7 +96,10 @@ function Form({ currentId, setCurrentId }) {
       </Typography>
     </Paper>
   ) : (
-    <Paper sx={{ p: 2, borderRadius: "15px" }} elevation={6}>
+    <Paper
+      sx={{ p: 2, borderRadius: setUpdateForm ? "0 15px 15px" : "15px" }}
+      elevation={setUpdateForm ? 0 : 6}
+    >
       <form
         autoComplete="off"
         style={{

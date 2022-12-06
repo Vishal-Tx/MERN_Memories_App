@@ -10,9 +10,11 @@ import { closeModal } from "../features/modal/modalSlice";
 import { deletePost } from "../features/api";
 import { remove } from "../features/posts/postsSlice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-export default function AlertDialog({ currentId, setCurrentId }) {
+export default function AlertDialog({ currentId, setCurrentId, detailsPage }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { isOpen } = useSelector((store) => store.modal);
   const post = useSelector((store) => {
     const {
@@ -36,6 +38,7 @@ export default function AlertDialog({ currentId, setCurrentId }) {
       dispatch(closeModal());
       dispatch(remove(data));
       setCurrentId({ id: null, name: "" });
+      if (detailsPage) navigate("/");
     }
   };
   return (
