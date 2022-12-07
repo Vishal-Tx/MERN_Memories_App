@@ -6,6 +6,7 @@ const url = "http://localhost:3001/posts";
 
 const initialState = {
   posts: [],
+  post: null,
   isLoading: true,
   error: null,
   currentPage: 1,
@@ -78,6 +79,7 @@ const postsSlice = createSlice({
     },
     update: (state, action) => {
       console.log("actionLike", action.payload);
+      console.log("state.post", state.post);
       state.posts = state.posts.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
@@ -92,6 +94,15 @@ const postsSlice = createSlice({
       state.posts = state.posts.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
+    },
+    addComment: (state, action) => {
+      // console.log("action.payload", action.payload);
+      // console.log("state.post", state.post);
+
+      state.posts = state.posts.map((post) =>
+        post._id === action.payload._id ? action.payload : post
+      );
+      state.post = action.payload;
     },
   },
   extraReducers: {
@@ -150,6 +161,7 @@ const postsSlice = createSlice({
   },
 });
 
-export const { fetchAll, create, update, remove, like } = postsSlice.actions;
+export const { fetchAll, create, update, remove, like, addComment } =
+  postsSlice.actions;
 
 export default postsSlice.reducer;

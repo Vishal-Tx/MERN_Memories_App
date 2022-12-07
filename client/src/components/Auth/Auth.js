@@ -39,7 +39,6 @@ const Auth = () => {
         const signupRes = await toast.promise(signup(formData), {
           pending: "Hang on...",
           success: `Account Created Successfully!`,
-          error: "Something Went Wrong!",
         });
         // console.log("signup", signupRes);
         dispatch(LogIn(signupRes));
@@ -54,7 +53,6 @@ const Auth = () => {
         const signinRes = await toast.promise(signin(formData), {
           pending: "Hang on...",
           success: `Logged in Successfully!`,
-          error: "Something Went Wrong!",
         });
         console.log("signinRRRRRRRRRRR", signinRes);
         dispatch(LogIn(signinRes));
@@ -85,7 +83,6 @@ const Auth = () => {
         {
           pending: "Hang on...",
           success: `Logged in Successfully!`,
-          error: "Something Went Wrong!",
         }
       );
 

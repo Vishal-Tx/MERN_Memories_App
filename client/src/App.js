@@ -11,6 +11,7 @@ import { Navbar, Home, Auth, PostDetails, UserDetails } from "./components";
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
+  console.log("user", user);
   return (
     <Router>
       <Container maxWidth="xl">

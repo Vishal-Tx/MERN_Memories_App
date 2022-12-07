@@ -35,6 +35,13 @@ const Navbar = () => {
     navigate("/");
   };
 
+  function randomColor() {
+    let hex = Math.floor(Math.random() * 0xffffff);
+    let color = "#" + hex.toString(16);
+
+    return color;
+  }
+
   useEffect(() => {
     const token = user?.token;
     if (token) {
@@ -101,7 +108,7 @@ const Navbar = () => {
             <Avatar
               alt={user?.result.name}
               src={user?.result.picture}
-              sx={{ margin: "0 25px 0" }}
+              sx={{ margin: "0 25px 0", bgcolor: randomColor() }}
             >
               {user?.result.name.charAt(0)}
             </Avatar>

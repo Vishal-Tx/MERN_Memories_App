@@ -66,10 +66,20 @@ export const likePost = async (id) => {
   try {
     const { data } = await API.patch(`/posts/${id}/likePost`);
     console.log("APiLike", data);
+
     return data;
   } catch (error) {
     console.log("errer", error);
   }
+};
+
+export const postComment = async (userId, comment, id) => {
+  const { data } = await API.patch(`/posts/${id}/commentPost`, {
+    userId,
+    comment,
+  });
+  // console.log("CommentAPIDAta", data);
+  return data;
 };
 
 export const signin = async (formData) => {

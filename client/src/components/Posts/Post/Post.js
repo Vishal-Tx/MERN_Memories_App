@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardActions,
@@ -26,13 +26,29 @@ dayjs.extend(relativeTime);
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("profile"));
+  const userId = user?.result?._id;
+
+  const [likes, setLikes] = useState(post?.likes);
+  const hasLikedPost = post.likes.find((like) => like === userId);
+
+  // const handleLike = async () => {
+  //   const data = await likePost(post._id);
+  //   dispatch(update(data));
+  // };
+  console.log("likes", likes);
   const handleLike = async () => {
     const data = await likePost(post._id);
     dispatch(update(data));
+
+    if (hasLikedPost) {
+      setLikes(post.likes.filter((id) => id !== userId));
+    } else {
+      setLikes([...post.likes, userId]);
+    }
   };
   // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-  const user = JSON.parse(localStorage.getItem("profile"));
-  const userId = user?.result?._id;
 
   const openPost = () => {
     navigate(`/posts/${post._id}`);
@@ -197,7 +213,7 @@ const Post = ({ post, setCurrentId }) => {
           onClick={handleLike}
           disabled={!user?.result}
         >
-          <Likes post={post} userId={userId} />
+          <Likes likes={likes} userId={userId} />
         </Button>
 
         {post?.creator._id === user?.result?._id && (

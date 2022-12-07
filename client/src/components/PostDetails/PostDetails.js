@@ -41,31 +41,49 @@ const PostDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("post", post);
+  useEffect(() => {
+    dispatch(getPost(id));
+  }, [id]);
+
+  useEffect(() => {
+    setLikes(post?.likes);
+  }, [post]);
+
+  console.log("INDIpost", post);
   const [isOpenPosts, setIsOpenPosts] = useState(true);
   const [currentId, setCurrentId] = useState({ id: null, name: "" });
   const [updateForm, setUpdateForm] = useState(false);
+  const [likes, setLikes] = useState(post?.likes);
+
+  console.log("postLokes", likes);
 
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?._id;
 
   const { isOpen } = useSelector((store) => store.modal);
 
-  useEffect(() => {}, []);
+  // const handleLike = async () => {
+  //   console.log("post._idLike", post._id);
+  //   const data = await likePost(post?._id);
+  //   console.log("data", data);
+  //   dispatch(update(data));
+  // };
+  const hasLikedPost = post?.likes.find((like) => like === userId);
 
   const handleLike = async () => {
-    console.log("post._idLike", post._id);
-    const data = await likePost(post._id);
+    const data = await likePost(post?._id);
     console.log("data", data);
     dispatch(update(data));
+
+    if (hasLikedPost) {
+      setLikes(post.likes.filter((id) => id !== userId));
+    } else {
+      setLikes([...post.likes, userId]);
+    }
   };
 
   useEffect(() => {
-    dispatch(getPost(id));
-  }, [id]);
-
-  useEffect(() => {
-    if (post && post._id === id) {
+    if (post && post?._id === id) {
       dispatch(
         getPostsBySearch({ search: "none", tags: post?.tags.join(",") })
       );
@@ -79,7 +97,7 @@ const PostDetails = () => {
 
   if (!post) return null;
 
-  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post?._id);
   // console.log("recommendedPosts", recommendedPosts);
 
   return isLoading ? (
@@ -166,7 +184,7 @@ const PostDetails = () => {
                     <strong>Realtime Chat - coming soon!</strong>
                   </Typography>
                   <Divider style={{ margin: "20px 0" }} />
-                  {post?.creator._id === user?.result?._id && (
+                  {post?.creator?._id === user?.result?._id && (
                     <div
                       title="update Memory"
                       style={{
@@ -179,7 +197,7 @@ const PostDetails = () => {
                         style={{ color: "black" }}
                         size="small"
                         onClick={(e) => {
-                          setCurrentId({ id: post._id, name: "update" });
+                          setCurrentId({ id: post?._id, name: "update" });
                           setUpdateForm(true);
                         }}
                       >
@@ -200,15 +218,15 @@ const PostDetails = () => {
                       onClick={handleLike}
                       disabled={!user?.result}
                     >
-                      <Likes post={post} userId={userId} />
+                      <Likes likes={likes} userId={userId} />
                     </Button>
 
-                    {post?.creator._id === user?.result?._id && (
+                    {post?.creator?._id === user?.result?._id && (
                       <Button
                         size="small"
                         color="error"
                         onClick={() => {
-                          setCurrentId({ id: post._id, name: "delete" });
+                          setCurrentId({ id: post?._id, name: "delete" });
                           dispatch(openModal());
                         }}
                       >
@@ -239,7 +257,7 @@ const PostDetails = () => {
               }}
               elevation={6}
             >
-              <CommentSection post={post} />
+              <CommentSection post={post} user={user} />
             </Paper>
           </Grid>
         </Grow>

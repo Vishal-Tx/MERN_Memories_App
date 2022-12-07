@@ -5,26 +5,26 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import { useDispatch } from "react-redux";
 
-const Likes = ({ post, userId }) => {
+const Likes = ({ likes, userId }) => {
   //   const dispatch = useDispatch();
   //   const handleLike = async () => {
   //     const data = await likePost(post._id);
   //     dispatch(update(data));
   //   };
 
-  if (post.likes.length > 0) {
-    return post.likes.find((like) => like === userId) ? (
+  if (likes?.length > 0) {
+    return likes.find((like) => like === userId) ? (
       <>
         <ThumbUpIcon fontSize="small" sx={{ mr: "4px" }} />
         &nbsp;
-        {post.likes.length > 2
-          ? `You and ${post.likes.length - 1} others`
-          : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+        {likes.length > 2
+          ? `You and ${likes.length - 1} others`
+          : `${likes.length} like${likes.length > 1 ? "s" : ""}`}
       </>
     ) : (
       <>
         <ThumbUpOffAltIcon fontSize="small" />
-        &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+        &nbsp;{likes.length} {likes.length === 1 ? "Like" : "Likes"}
       </>
     );
   }

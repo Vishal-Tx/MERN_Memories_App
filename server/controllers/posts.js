@@ -177,18 +177,37 @@ export const likePost = async (req, res) => {
 
 export const commentPost = async (req, res) => {
   const { id: _id } = req.params;
-  const comment = req.body;
+  console.log("cBody", req.body);
+  const { userId, comment } = req.body;
+  console.log("req.params", req.params);
+  console.log("req.userId", req.userId);
 
   if (!req.userId)
     return res.json({ message: "Unauthenticated!, Please Login First." });
+
+  if (req.userId !== userId) return res.json({ message: "UserId Mismatch." });
 
   if (!mongoose.isValidObjectId(_id)) {
     return res.status(404).send("No post with that ID");
   }
 
   try {
-    const commentPost = await PostMessage.findById(_id).populate("creator");
-    commentPost.comment.push(comment);
+    const commentPost = await PostMessage.findById(_id);
+
+    commentPost.comments.push({
+      author: userId,
+      body: comment,
+      PostMessage: _id,
+    });
+
+    await commentPost.save();
+    const resultPost = await PostMessage.findById(_id)
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password" },
+      });
+    res.status(200).json(resultPost);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }

@@ -5,8 +5,16 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import Errorhandler from "../../Errorhandler";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "../../../features/user/userSlice";
-import { Avatar } from "@mui/material";
+import { Avatar, Grid } from "@mui/material";
+import { deepOrange } from "@mui/material/colors";
 dayjs.extend(relativeTime);
+
+function randomColor() {
+  let hex = Math.floor(Math.random() * 0xffffff);
+  let color = "#" + hex.toString(16);
+
+  return color;
+}
 
 const Comments = ({ comment }) => {
   const User = useSelector((store) => store.user);
@@ -20,15 +28,31 @@ const Comments = ({ comment }) => {
 
   return (
     <div>
-      <Avatar
-        alt={comment?.author?.name}
-        src={comment?.author?.picture}
-        sx={{ margin: "0 25px 0" }}
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
       >
-        {comment?.author?.name.charAt(0)}
-      </Avatar>
-      <p>{comment?.author?.name}</p>
-      <p>{comment.body}</p>
+        <Grid
+          item
+          xs={3}
+          sm={1}
+          sx={{ display: "flex", justifyContent: "flex-start" }}
+        >
+          <Avatar
+            alt={comment?.author?.name}
+            src={comment?.author?.picture}
+            sx={{ bgcolor: randomColor() }}
+          >
+            {comment?.author?.name?.charAt(0)}
+          </Avatar>
+        </Grid>
+        <Grid item xs={9} sm={11}>
+          <p>{comment?.author?.name}</p>
+          <p>{comment.body}</p>
+        </Grid>
+      </Grid>
     </div>
   );
 };
