@@ -72,7 +72,12 @@ const CommentSection = ({ post, user }) => {
           </div>
         )}
         {comments?.map((comment) => (
-          <Comments key={comment._id} comment={comment} />
+          <Comments
+            key={comment._id}
+            comment={comment}
+            user={user}
+            postId={post._id}
+          />
         ))}
       </div>
     </div>

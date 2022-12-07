@@ -21,6 +21,7 @@ import { update } from "../../../features/posts/postsSlice";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import Likes from "./Likes";
+import Tooltip from "@mui/material/Tooltip";
 dayjs.extend(relativeTime);
 
 const Post = ({ post, setCurrentId }) => {
@@ -183,21 +184,22 @@ const Post = ({ post, setCurrentId }) => {
       </ButtonBase>
       {post?.creator._id === user?.result?._id && (
         <div
-          title="update Memory"
           style={{
             position: "relative",
             margin: "auto",
           }}
         >
-          <Button
-            style={{ color: "black" }}
-            size="small"
-            onClick={(e) => {
-              setCurrentId({ id: post._id, name: "update" });
-            }}
-          >
-            <MoreHorizIcon fontSize="medium" />
-          </Button>
+          <Tooltip title="update Memory" placement="top-end" arrow>
+            <Button
+              style={{ color: "black" }}
+              size="small"
+              onClick={(e) => {
+                setCurrentId({ id: post._id, name: "update" });
+              }}
+            >
+              <MoreHorizIcon fontSize="medium" />
+            </Button>
+          </Tooltip>
         </div>
       )}
       <CardActions

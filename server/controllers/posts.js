@@ -212,3 +212,9 @@ export const commentPost = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
+
+export const deleteComment = async (req, res) => {
+  const { id: _id } = req.params;
+  console.log("cBody", req.body);
+  console.log("req.userId", req.userId);
+};

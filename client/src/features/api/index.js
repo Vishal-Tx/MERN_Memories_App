@@ -82,6 +82,15 @@ export const postComment = async (userId, comment, id) => {
   return data;
 };
 
+export const deleteComment = async (userId, comment, id) => {
+  const { data } = await API.delete(`/posts/${id}/deleteComment`, {
+    userId,
+    comment,
+  });
+  // console.log("CommentAPIDAta", data);
+  return data;
+};
+
 export const signin = async (formData) => {
   const { data } = await API.post("/user/signin", formData);
   console.log("SignInData", data);

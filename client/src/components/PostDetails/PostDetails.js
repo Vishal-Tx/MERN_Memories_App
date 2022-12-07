@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   Paper,
-  CircularProgress,
   Typography,
   Divider,
   Card,
@@ -33,6 +32,7 @@ import Likes from "../Posts/Post/Likes";
 import { likePost } from "../../features/api";
 import { openModal } from "../../features/modal/modalSlice";
 import Form from "../Form/Form";
+import Skeleton from "@mui/material/Skeleton";
 dayjs.extend(relativeTime);
 
 const PostDetails = () => {
@@ -101,16 +101,36 @@ const PostDetails = () => {
   // console.log("recommendedPosts", recommendedPosts);
 
   return isLoading ? (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
+    <Grid
+      container
+      direction="row"
+      justifyContent="space-evenly"
+      alignItems="stretch"
+      spacing={3}
     >
-      <CircularProgress size={70} />
-    </div>
+      <Grid item xs={12} sm={12} md={9}>
+        <Skeleton
+          variant="rounded"
+          height={450}
+          sx={{ borderRadius: "15px" }}
+          animation="wave"
+        />
+        <Skeleton
+          variant="rounded"
+          height={450}
+          sx={{ borderRadius: "15px", mt: "10px" }}
+          animation="wave"
+        />
+      </Grid>
+      <Grid item xs={12} sm={12} md={3}>
+        <Skeleton
+          variant="rounded"
+          height={100}
+          sx={{ borderRadius: "15px" }}
+          animation="wave"
+        />
+      </Grid>
+    </Grid>
   ) : !error ? (
     <>
       {isOpen && (

@@ -1,23 +1,34 @@
 import React from "react";
 import Post from "./Post/Post";
 import { useSelector } from "react-redux";
-import { CircularProgress, Grid } from "@mui/material";
+import { Grid, Skeleton } from "@mui/material";
 import Errorhandler from "../Errorhandler";
 
 function Posts({ setCurrentId }) {
   const { posts, isLoading, error } = useSelector((store) => store.posts);
   console.log("error", error);
   return isLoading ? (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <CircularProgress size={70} />
-    </div>
+    <Grid container alignItems="stretch" spacing={3}>
+      {[...Array(8)].map((item, index) => (
+        <Grid
+          key={index}
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          sx={{ justifyContent: { sm: "flex-start" } }}
+        >
+          <Skeleton
+            variant="rounded"
+            sx={{ borderRadius: "15px", display: "flex" }}
+            width={229.5}
+            height={352.275}
+            animation="wave"
+          />
+        </Grid>
+      ))}
+    </Grid>
   ) : !error ? (
     <Grid container alignItems="stretch" spacing={3}>
       {posts?.map((post) => (
