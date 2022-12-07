@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Container } from "@mui/material";
 import {
@@ -10,8 +10,11 @@ import {
 import { Navbar, Home, Auth, PostDetails, UserDetails } from "./components";
 
 const App = () => {
-  const user = JSON.parse(localStorage.getItem("profile"));
-  console.log("user", user);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, []);
+
   return (
     <Router>
       <Container maxWidth="xl">
