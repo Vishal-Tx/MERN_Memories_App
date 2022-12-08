@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Box,
@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteComment } from "../../../features/api";
 import { toast } from "react-toastify";
 import { update } from "../../../features/posts/postsSlice";
+import "./Comments.css";
 dayjs.extend(relativeTime);
 
 function randomColor() {
@@ -74,9 +75,10 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
       >
         <Grid
           item
-          xs={3}
+          xs={2.5}
           sm={1}
-          md={0.6}
+          md={0.8}
+          lg={0.6}
           sx={{
             display: "flex",
             justifyContent: {
@@ -85,21 +87,30 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
             },
           }}
         >
-          <Avatar
-            alt={comment?.author?.name}
-            src={comment?.author?.picture}
-            sx={{ bgcolor: randomColor() }}
+          <Link
+            className="commentUserAvatar"
+            to={`/user/${comment?.author?._id}`}
           >
-            {comment?.author?.name?.charAt(0)}
-          </Avatar>
+            <Avatar
+              alt={comment?.author?.name}
+              src={comment?.author?.picture}
+              sx={{ bgcolor: randomColor() }}
+            >
+              {comment?.author?.name?.charAt(0)}
+            </Avatar>
+          </Link>
         </Grid>
-        <Grid item xs={8} sm={10} md={10.4}>
+        <Grid item xs={8.5} sm={10} md={10.2} lg={10.4}>
           <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-            <Typography align="flex-start" sx={{ mr: { xs: "6px", sm: 0 } }}>
-              {comment?.author?.name}
-            </Typography>
+            <Link
+              to={`/user/${comment?.author?._id}`}
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <Typography sx={{ mr: { xs: "6px", sm: 0 } }}>
+                {comment?.author?.name}
+              </Typography>
+            </Link>
             <Typography
-              align="flex-start"
               variant="subtitle2"
               color="textSecondary"
               sx={{ ml: { xs: 0, sm: "8px" }, mt: "2px" }}
@@ -115,7 +126,6 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
           <Grid
             item
             xs={1}
-            sm={1}
             sx={{
               display: "flex",
               justifyContent: "flex-end",
@@ -155,8 +165,6 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
           <Grid
             item
             xs={1}
-            sm={1}
-            md={1}
             sx={{
               display: "flex",
               justifyContent: "flex-end",
