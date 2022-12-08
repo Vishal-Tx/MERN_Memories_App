@@ -3,11 +3,21 @@ import { useSelector, useDispatch } from "react-redux";
 import * as dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Avatar, Button, Grid, Menu, MenuItem } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Grid,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteComment } from "../../../features/api";
+import { toast } from "react-toastify";
+import { update } from "../../../features/posts/postsSlice";
 dayjs.extend(relativeTime);
 
 function randomColor() {
@@ -17,7 +27,7 @@ function randomColor() {
   return color;
 }
 
-const Comments = ({ comment, user, postId }) => {
+const Comments = ({ comment, user, postId, setCommentUpdated }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,13 +42,25 @@ const Comments = ({ comment, user, postId }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleCommentUpdate = () => {
+    setCommentUpdated({ appear: true, value: comment });
+    setAnchorEl(null);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleCommentDelete = async () => {
-    console.log("comment", comment);
-    const data = await deleteComment(userId, comment, postId);
+    const { commentPost } = await toast.promise(
+      deleteComment(comment?._id, postId),
+      {
+        pending: "Deleting...",
+        success: `Comment deleted Successfully!`,
+        error: "Something Went Wrong!",
+      }
+    );
+    dispatch(update(commentPost));
   };
 
   return (
@@ -48,12 +70,20 @@ const Comments = ({ comment, user, postId }) => {
         direction="row"
         alignItems="center"
         justifyContent="center"
+        sx={{ my: "15px" }}
       >
         <Grid
           item
           xs={3}
           sm={1}
-          sx={{ display: "flex", justifyContent: "flex-start" }}
+          md={0.6}
+          sx={{
+            display: "flex",
+            justifyContent: {
+              xs: "flex-start",
+              sm: "flex-start",
+            },
+          }}
         >
           <Avatar
             alt={comment?.author?.name}
@@ -63,11 +93,25 @@ const Comments = ({ comment, user, postId }) => {
             {comment?.author?.name?.charAt(0)}
           </Avatar>
         </Grid>
-        <Grid item xs={8} sm={10}>
-          <p>{comment?.author?.name}</p>
-          <p>{comment.body}</p>
+        <Grid item xs={8} sm={10} md={10.4}>
+          <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+            <Typography align="flex-start" sx={{ mr: { xs: "6px", sm: 0 } }}>
+              {comment?.author?.name}
+            </Typography>
+            <Typography
+              align="flex-start"
+              variant="subtitle2"
+              color="textSecondary"
+              sx={{ ml: { xs: 0, sm: "8px" }, mt: "2px" }}
+            >
+              {dayjs(comment?.commentDate).fromNow()}
+            </Typography>
+          </Box>
+          <Typography sx={{ fontWeight: 500, fontSize: "1.1rem" }}>
+            {comment.body}
+          </Typography>
         </Grid>
-        {userId === comment.author._id ? (
+        {userId === comment?.author?._id ? (
           <Grid
             item
             xs={1}
@@ -89,7 +133,6 @@ const Comments = ({ comment, user, postId }) => {
               <MoreVertIcon />
             </Button>
             <Menu
-              className="nn"
               id="basic-menu"
               anchorEl={anchorEl}
               open={open}
@@ -98,7 +141,7 @@ const Comments = ({ comment, user, postId }) => {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleCommentUpdate}>
                 <EditIcon sx={{ ml: "-8px", mr: "20px" }} />
                 Edit
               </MenuItem>
@@ -113,6 +156,7 @@ const Comments = ({ comment, user, postId }) => {
             item
             xs={1}
             sm={1}
+            md={1}
             sx={{
               display: "flex",
               justifyContent: "flex-end",

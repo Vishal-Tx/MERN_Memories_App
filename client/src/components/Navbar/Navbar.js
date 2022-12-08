@@ -14,6 +14,9 @@ import React, { useState, useEffect } from "react";
 import memoriesLogo from "../../images/memories-Logo.png";
 import memoriesText from "../../images/memories-Text.png";
 import useMediaQuery from "@mui/material/useMediaQuery";
+
+import { styled } from "@mui/material/styles";
+import Badge from "@mui/material/Badge";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,6 +54,17 @@ const Navbar = () => {
     }
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location]);
+
+  const StyledBadge = styled(Badge)(({ theme }) => ({
+    "& .MuiBadge-badge": {
+      backgroundColor: "#44b700",
+      color: "#44b700",
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    },
+    ".MuiBadge-dot": {
+      marginRight: "15px",
+    },
+  }));
 
   return (
     <AppBar
@@ -105,13 +119,19 @@ const Navbar = () => {
             {matches ? (
               <Typography variant="h6">{user?.result.name}</Typography>
             ) : null}
-            <Avatar
-              alt={user?.result.name}
-              src={user?.result.picture}
-              sx={{ margin: "0 25px 0", bgcolor: randomColor() }}
+            <StyledBadge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              variant="dot"
             >
-              {user?.result.name.charAt(0)}
-            </Avatar>
+              <Avatar
+                alt={user?.result.name}
+                src={user?.result.picture}
+                sx={{ margin: "0 25px 0", bgcolor: randomColor() }}
+              >
+                {user?.result.name.charAt(0)}
+              </Avatar>
+            </StyledBadge>
             <Button
               onClick={handleLogout}
               variant="contained"

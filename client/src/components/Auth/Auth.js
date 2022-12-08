@@ -42,7 +42,7 @@ const Auth = () => {
         });
         // console.log("signup", signupRes);
         dispatch(LogIn(signupRes));
-        navigate("/");
+        navigate(-1);
       } catch (error) {
         console.log("error", error);
         toast.error(error?.response?.data.message);
@@ -56,7 +56,7 @@ const Auth = () => {
         });
         console.log("signinRRRRRRRRRRR", signinRes);
         dispatch(LogIn(signinRes));
-        navigate("/");
+        navigate(-1);
       } catch (error) {
         // console.log("signinResError", error);
         toast.error(error?.response?.data.message);
@@ -92,7 +92,7 @@ const Auth = () => {
         token: googleResponse.token,
       };
       dispatch(LogIn(gLoginData));
-      navigate("/");
+      navigate(-1);
     } catch (error) {
       toast.error(error?.response?.data.message);
     }

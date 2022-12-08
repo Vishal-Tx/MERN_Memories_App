@@ -64,13 +64,13 @@ export const signinGoogle = async (req, res) => {
   // console.log("req.body", req.body);
   try {
     const decodedData = jwt.decode(req.body.data);
-    console.log("decodedData", decodedData);
+    // console.log("decodedData", decodedData);
     const { email, name, sub, picture } = decodedData;
 
     const existingUser = await User.findOne({ sub });
 
     if (existingUser) {
-      console.log("existingUser", existingUser);
+      // console.log("existingUser", existingUser);
       existingUser.name = name;
       existingUser.picture = picture;
       await existingUser.save();
@@ -122,7 +122,7 @@ export const getUser = async (req, res) => {
   const { id: _id } = req.params;
   try {
     const user = await User.findById(_id);
-    console.log("user", user);
+    // console.log("user", user);
     if (!user) {
       return res.status(404).json({ message: "User doesn't exist." });
     }

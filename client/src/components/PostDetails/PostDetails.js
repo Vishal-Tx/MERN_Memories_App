@@ -68,7 +68,7 @@ const PostDetails = () => {
   //   console.log("data", data);
   //   dispatch(update(data));
   // };
-  const hasLikedPost = post?.likes.find((like) => like === userId);
+  const hasLikedPost = post?.likes?.find((like) => like === userId);
 
   const handleLike = async () => {
     const data = await likePost(post?._id);
@@ -190,10 +190,10 @@ const PostDetails = () => {
                   <Typography variant="h6">
                     Created by:
                     <Link
-                      to={`/user/${post.creator._id}`}
+                      to={`/user/${post?.creator?._id}`}
                       style={{ textDecoration: "none", color: "#3f51b5" }}
                     >
-                      {` ${post.creator.name}`}
+                      {` ${post?.creator?.name}`}
                     </Link>
                   </Typography>
                   <Typography variant="body1">

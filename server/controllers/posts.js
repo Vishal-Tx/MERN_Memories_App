@@ -160,7 +160,7 @@ export const likePost = async (req, res) => {
     .populate("creator")
     .populate({
       path: "comments",
-      populate: { path: "author", select: "-password" },
+      populate: { path: "author", select: "-password -sub" },
     });
   const index = likePost.likes.findIndex((id) => id === String(req.userId));
 
@@ -205,7 +205,7 @@ export const commentPost = async (req, res) => {
       .populate("creator")
       .populate({
         path: "comments",
-        populate: { path: "author", select: "-password" },
+        populate: { path: "author", select: "-password -sub" },
       });
     res.status(200).json(resultPost);
   } catch (error) {
@@ -214,7 +214,57 @@ export const commentPost = async (req, res) => {
 };
 
 export const deleteComment = async (req, res) => {
+  const { id: _id, commentId } = req.params;
+
+  try {
+    const commentPost = await PostMessage.findById(_id)
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password -sub" },
+      });
+    const result = commentPost.comments.filter(
+      (comment) => comment.id !== commentId
+    );
+
+    commentPost.comments = [...result];
+
+    await commentPost.save();
+
+    res.json({ commentPost });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const updateComment = async (req, res) => {
+  // console.log("updateComment");
+  // // console.log("req.userId", req.userId);
+  // console.log("req.body", req.body);
   const { id: _id } = req.params;
-  console.log("cBody", req.body);
-  console.log("req.userId", req.userId);
+  const { comment, userId } = req.body;
+
+  try {
+    const commentPost = await PostMessage.findById(_id);
+
+    const result = commentPost.comments.filter(
+      (Comment) => Comment.id !== comment._id
+    );
+
+    commentPost.comments = [...result, comment];
+    await commentPost.save();
+
+    const CommentPost = await PostMessage.findById(_id)
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password -sub" },
+      });
+
+    console.log("CommentPost", CommentPost);
+    res.json({ CommentPost });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
 };

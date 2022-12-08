@@ -82,12 +82,18 @@ export const postComment = async (userId, comment, id) => {
   return data;
 };
 
-export const deleteComment = async (userId, comment, id) => {
-  const { data } = await API.delete(`/posts/${id}/deleteComment`, {
+export const deleteComment = async (commentId, id) => {
+  const { data } = await API.delete(`/posts/${id}/deleteComment/${commentId}`);
+  console.log("DeleteCommentAPIDAta", data);
+  return data;
+};
+
+export const updateComment = async (userId, comment, id) => {
+  const { data } = await API.patch(`/posts/${id}/updateComment`, {
     userId,
     comment,
   });
-  // console.log("CommentAPIDAta", data);
+  console.log("UpdateCommentAPIDAta", data);
   return data;
 };
 
