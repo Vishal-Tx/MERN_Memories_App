@@ -36,7 +36,9 @@ import Skeleton from "@mui/material/Skeleton";
 dayjs.extend(relativeTime);
 
 const PostDetails = () => {
-  const { posts, isLoading, error, post } = useSelector((store) => store.posts);
+  const { posts, isLoading, error, post, detailsLoading } = useSelector(
+    (store) => store.posts
+  );
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -100,7 +102,7 @@ const PostDetails = () => {
   const recommendedPosts = posts.filter(({ _id }) => _id !== post?._id);
   // console.log("recommendedPosts", recommendedPosts);
 
-  return isLoading ? (
+  return detailsLoading ? (
     <Grid
       container
       direction="row"

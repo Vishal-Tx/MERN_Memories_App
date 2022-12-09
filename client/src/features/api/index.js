@@ -97,6 +97,13 @@ export const updateComment = async (userId, comment, id) => {
   return data;
 };
 
+export const likeComment = async (commentId, id) => {
+  const { data } = await API.patch(`/posts/${id}/likeComment/${commentId}`);
+  console.log("APiCommentLike", data);
+
+  return data;
+};
+
 export const signin = async (formData) => {
   const { data } = await API.post("/user/signin", formData);
   console.log("SignInData", data);

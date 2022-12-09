@@ -8,6 +8,7 @@ const initialState = {
   posts: [],
   post: null,
   isLoading: true,
+  detailsLoading: true,
   error: null,
   currentPage: 1,
   numberOfPages: 1,
@@ -78,12 +79,15 @@ const postsSlice = createSlice({
       state.posts = [...state.posts, action.payload];
     },
     update: (state, action) => {
+      state.detailsLoading = true;
       console.log("actionLike", action.payload);
       console.log("state.post", state.post);
+
       state.posts = state.posts.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
       state.post = action.payload;
+      state.detailsLoading = false;
     },
     remove: (state, action) => {
       state.posts = state.posts.filter(
@@ -111,6 +115,7 @@ const postsSlice = createSlice({
     },
     [getPosts.fulfilled]: (state, action) => {
       state.isLoading = false;
+
       state.posts = action.payload.data;
       state.currentPage = action.payload.currentPage;
       state.numberOfPages = action.payload.numberOfPages;
@@ -126,10 +131,10 @@ const postsSlice = createSlice({
     },
 
     [getPost.pending]: (state, action) => {
-      state.isLoading = true;
+      state.detailsLoading = true;
     },
     [getPost.fulfilled]: (state, action) => {
-      state.isLoading = false;
+      state.detailsLoading = false;
       state.post = action.payload;
       console.log("allposts", action.payload);
       console.log("state.posts", state.posts);
@@ -138,7 +143,7 @@ const postsSlice = createSlice({
     },
     [getPost.rejected]: (state, action) => {
       console.log("Raction", action);
-      state.isLoading = false;
+      state.detailsLoading = false;
       state.error = action.payload;
       console.log("rejected");
     },

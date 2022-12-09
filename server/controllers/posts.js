@@ -163,6 +163,7 @@ export const likePost = async (req, res) => {
       populate: { path: "author", select: "-password -sub" },
     });
   const index = likePost.likes.findIndex((id) => id === String(req.userId));
+  console.log("postIndex", index);
 
   if (index === -1) {
     //like the post
@@ -263,6 +264,56 @@ export const updateComment = async (req, res) => {
 
     console.log("CommentPost", CommentPost);
     res.json({ CommentPost });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const likeComment = async (req, res) => {
+  const { id: _id, commentId } = req.params;
+  console.log("req.params", req.params);
+
+  if (!req.userId) return res.json({ message: "Unauthenticated" });
+
+  if (!mongoose.isValidObjectId(_id)) {
+    return res.status(404).send("No post with that ID");
+  }
+
+  try {
+    const likeCommentPost = await PostMessage.findById(_id)
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password -sub" },
+      });
+
+    // console.log("likeCommentPost", likeCommentPost);
+    const result = likeCommentPost?.comments?.find(
+      (Comment) => Comment._id.toString() === commentId
+    );
+
+    const restComments = likeCommentPost?.comments?.filter(
+      (Comment) => Comment._id.toString() !== commentId
+    );
+
+    // console.log("resultjhcgh", result.likes);
+
+    const index = result?.likes?.findIndex((id) => id === String(req.userId));
+    console.log("index", index);
+
+    if (index === -1) {
+      //like the post
+      result.likes.push(req.userId);
+    } else {
+      //dislike the post
+      result.likes = result?.likes?.filter((id) => id !== String(req.userId));
+    }
+    likeCommentPost.comments = [...restComments, result];
+    await likeCommentPost.save();
+    console.log("likeCommentPost.comments", likeCommentPost);
+
+    res.json(likeCommentPost);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });

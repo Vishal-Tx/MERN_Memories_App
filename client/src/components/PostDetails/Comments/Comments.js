@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -15,24 +15,19 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteComment } from "../../../features/api";
+import { deleteComment, likeComment } from "../../../features/api";
 import { toast } from "react-toastify";
 import { update } from "../../../features/posts/postsSlice";
 import "./Comments.css";
+import Likes from "../../Posts/Post/Likes";
 dayjs.extend(relativeTime);
-
-function randomColor() {
-  let hex = Math.floor(Math.random() * 0xffffff);
-  let color = "#" + hex.toString(16);
-
-  return color;
-}
 
 const Comments = ({ comment, user, postId, setCommentUpdated }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const userId = user?.result?._id;
+  const [likes, setLikes] = useState(comment?.likes);
 
   // useEffect(() => {
   //   dispatch(getUser(commentCreator));
@@ -64,6 +59,26 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
     dispatch(update(commentPost));
   };
 
+  const hasLikedPost = comment?.likes?.find((like) => like === userId);
+
+  const handleLike = async () => {
+    const data = await likeComment(comment?._id, postId);
+    console.log("Likedata", data);
+    dispatch(update(data));
+
+    if (hasLikedPost) {
+      setLikes(comment.likes.filter((id) => id !== userId));
+    } else {
+      setLikes([...comment.likes, userId]);
+    }
+  };
+
+  function randomColor() {
+    let hex = Math.floor(Math.random() * 0xffffff);
+    let color = "#" + hex.toString(16);
+
+    return color;
+  }
   return (
     <div>
       <Grid
@@ -173,6 +188,25 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
             }}
           ></Grid>
         )}
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            position: "relative",
+
+            ml: { xs: "60px", sm: "52px" },
+          }}
+        >
+          <Button
+            size="small"
+            color="primary"
+            disabled={!user?.result}
+            onClick={handleLike}
+          >
+            <Likes likes={comment?.likes} userId={userId} />
+          </Button>
+        </Grid>
       </Grid>
     </div>
   );

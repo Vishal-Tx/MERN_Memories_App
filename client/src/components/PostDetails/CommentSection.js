@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Typography, TextField, Button, Divider, Box } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./Styles.css";
 import Comments from "./Comments/Comments";
+import CircularProgress from "@mui/material/CircularProgress";
 import { postComment, updateComment } from "../../features/api";
 import { addComment, update } from "../../features/posts/postsSlice";
 import { toast } from "react-toastify";
 
 const CommentSection = ({ post, user }) => {
+  const { isLoading } = useSelector((store) => store.posts);
   const dispatch = useDispatch();
   const commentsRef = useRef();
   const [comment, setComment] = useState("");
@@ -25,7 +27,8 @@ const CommentSection = ({ post, user }) => {
     }
   }, [commentUpdated?.value]);
 
-  const handleComment = async () => {
+  const handleComment = async (e) => {
+    e.preventDefault();
     if (commentUpdated.appear) {
       console.log(commentUpdated);
       const { value: comment } = commentUpdated;
@@ -45,6 +48,8 @@ const CommentSection = ({ post, user }) => {
       );
       if (CommentPost) dispatch(update(CommentPost));
       // alert("update");
+      setCommentUpdated({ appear: false, value: null });
+      commentsRef.current.value = null;
     } else {
       console.log("commentsRef.current.value", commentsRef.current.value);
       const comment = commentsRef.current.value;
@@ -53,6 +58,7 @@ const CommentSection = ({ post, user }) => {
       setComments("");
       setComments(data?.comments);
       dispatch(update(data));
+      commentsRef.current.value = null;
     }
   };
   console.log("post.comments", post.comments);
@@ -80,34 +86,48 @@ const CommentSection = ({ post, user }) => {
             <Typography gutterBottom variant="h6">
               {commentUpdated.appear ? "Update the Comment" : "Write a comment"}
             </Typography>
-            <TextField
-              fullWidth
-              rows={4}
-              variant="outlined"
-              label="Comment"
-              multiline
-              inputRef={commentsRef}
-            />
-            <br />
-            <Box
-              style={{
-                marginTop: "10px",
-                display: "flex",
-                justifyContent: "flex-end",
-              }}
-            >
-              <Button
+            <form onSubmit={handleComment}>
+              <TextField
+                fullWidth
+                rows={4}
+                variant="outlined"
+                label="Comment"
+                multiline
+                inputRef={commentsRef}
+                helperText="Comment cannot be empty!"
+              />
+              <br />
+
+              <Box
                 style={{
                   marginTop: "10px",
+                  display: "flex",
+                  justifyContent: "flex-end",
                 }}
-                color="primary"
-                variant="contained"
-                onClick={handleComment}
               >
-                {commentUpdated.appear ? "Update" : "Comment"}
-              </Button>
-            </Box>
+                <Button
+                  style={{
+                    marginTop: "10px",
+                  }}
+                  color="primary"
+                  variant="contained"
+                >
+                  {commentUpdated.appear ? "Update" : "Comment"}
+                </Button>
+              </Box>
+            </form>
             <Divider style={{ margin: "20px 0" }} />
+            {isLoading && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                }}
+              >
+                <CircularProgress sx={{ mx: "auto" }} />
+              </Box>
+            )}
           </div>
         )}
         {userComments
@@ -122,18 +142,15 @@ const CommentSection = ({ post, user }) => {
               setCommentUpdated={setCommentUpdated}
             />
           ))}
-        {otherComments
-          .slice(0)
-          .reverse()
-          .map((comment) => (
-            <Comments
-              key={comment?._id}
-              comment={comment}
-              user={user}
-              postId={post?._id}
-              setCommentUpdated={setCommentUpdated}
-            />
-          ))}
+        {otherComments.map((comment) => (
+          <Comments
+            key={comment?._id}
+            comment={comment}
+            user={user}
+            postId={post?._id}
+            setCommentUpdated={setCommentUpdated}
+          />
+        ))}
       </div>
     </div>
   );
