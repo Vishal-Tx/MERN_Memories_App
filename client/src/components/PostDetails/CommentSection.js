@@ -86,36 +86,35 @@ const CommentSection = ({ post, user }) => {
             <Typography gutterBottom variant="h6">
               {commentUpdated.appear ? "Update the Comment" : "Write a comment"}
             </Typography>
-            <form onSubmit={handleComment}>
-              <TextField
-                fullWidth
-                rows={4}
-                variant="outlined"
-                label="Comment"
-                multiline
-                inputRef={commentsRef}
-                helperText="Comment cannot be empty!"
-              />
-              <br />
 
-              <Box
+            <TextField
+              fullWidth
+              rows={4}
+              variant="outlined"
+              label="Comment"
+              multiline
+              inputRef={commentsRef}
+            />
+            <br />
+
+            <Box
+              style={{
+                marginTop: "10px",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
                 style={{
                   marginTop: "10px",
-                  display: "flex",
-                  justifyContent: "flex-end",
                 }}
+                color="primary"
+                variant="contained"
+                onClick={handleComment}
               >
-                <Button
-                  style={{
-                    marginTop: "10px",
-                  }}
-                  color="primary"
-                  variant="contained"
-                >
-                  {commentUpdated.appear ? "Update" : "Comment"}
-                </Button>
-              </Box>
-            </form>
+                {commentUpdated.appear ? "Update" : "Comment"}
+              </Button>
+            </Box>
             <Divider style={{ margin: "20px 0" }} />
             {isLoading && (
               <Box

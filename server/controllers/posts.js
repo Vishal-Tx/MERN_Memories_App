@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
+import Comment from "../models/comment.js";
 
 export const getPosts = async (req, res) => {
   // console.log("req.query", req.query);
@@ -193,23 +194,50 @@ export const commentPost = async (req, res) => {
   }
 
   try {
-    const commentPost = await PostMessage.findById(_id);
+    const Post = await PostMessage.findById(_id)
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password -sub" },
+      });
 
-    commentPost.comments.push({
+    const commentBody = await new Comment({
       author: userId,
       body: comment,
       PostMessage: _id,
     });
 
-    await commentPost.save();
+    console.log("commentBody", commentBody);
+    await commentBody.save();
+    Post.comments.push(commentBody);
+    await Post.save();
+
     const resultPost = await PostMessage.findById(_id)
       .populate("creator")
       .populate({
         path: "comments",
         populate: { path: "author", select: "-password -sub" },
       });
+
+    console.log("resultPost", resultPost);
     res.status(200).json(resultPost);
+
+    // commentPost.comments.push({
+    //   author: userId,
+    //   body: comment,
+    //   PostMessage: _id,
+    // });
+
+    // await commentPost.save();
+    // const resultPost = await PostMessage.findById(_id)
+    //   .populate("creator")
+    //   .populate({
+    //     path: "comments",
+    //     populate: { path: "author", select: "-password -sub" },
+    //   });
+    // res.status(200).json(resultPost);
   } catch (error) {
+    console.log("error", error);
     res.status(409).json({ message: error.message });
   }
 };
