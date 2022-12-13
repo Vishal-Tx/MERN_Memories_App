@@ -103,7 +103,7 @@ export const createPost = async (req, res) => {
     console.log("newPost", newPost);
     res.status(200).json(newPost);
   } catch (error) {
-    console.log("error");
+    console.log("error", error);
     res.status(409).json({ message: error.message });
   }
 };
@@ -194,48 +194,48 @@ export const commentPost = async (req, res) => {
   }
 
   try {
-    const Post = await PostMessage.findById(_id)
+    const commentPost = await PostMessage.findById(_id)
       .populate("creator")
       .populate({
         path: "comments",
         populate: { path: "author", select: "-password -sub" },
       });
 
-    const commentBody = await new Comment({
-      author: userId,
-      body: comment,
-      PostMessage: _id,
-    });
-
-    console.log("commentBody", commentBody);
-    await commentBody.save();
-    Post.comments.push(commentBody);
-    await Post.save();
-
-    const resultPost = await PostMessage.findById(_id)
-      .populate("creator")
-      .populate({
-        path: "comments",
-        populate: { path: "author", select: "-password -sub" },
-      });
-
-    console.log("resultPost", resultPost);
-    res.status(200).json(resultPost);
-
-    // commentPost.comments.push({
+    // const commentBody = await new Comment({
     //   author: userId,
     //   body: comment,
     //   PostMessage: _id,
     // });
 
-    // await commentPost.save();
+    // console.log("commentBody", commentBody);
+    // await commentBody.save();
+    // Post.comments.push(commentBody);
+    // await Post.save();
+
     // const resultPost = await PostMessage.findById(_id)
     //   .populate("creator")
     //   .populate({
     //     path: "comments",
     //     populate: { path: "author", select: "-password -sub" },
     //   });
+
+    // console.log("resultPost", resultPost);
     // res.status(200).json(resultPost);
+
+    commentPost.comments.push({
+      author: userId,
+      body: comment,
+      PostMessage: _id,
+    });
+
+    await commentPost.save();
+    const resultPost = await PostMessage.findById(_id)
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password -sub" },
+      });
+    res.status(200).json(resultPost);
   } catch (error) {
     console.log("error", error);
     res.status(409).json({ message: error.message });
@@ -246,22 +246,34 @@ export const deleteComment = async (req, res) => {
   const { id: _id, commentId } = req.params;
 
   try {
-    const commentPost = await PostMessage.findById(_id)
+    const commentPost = await PostMessage.findByIdAndUpdate(_id, {
+      $pull: { comments: { _id: commentId } },
+    })
       .populate("creator")
       .populate({
         path: "comments",
         populate: { path: "author", select: "-password -sub" },
       });
-    const result = commentPost.comments.filter(
-      (comment) => comment.id !== commentId
-    );
 
-    commentPost.comments = [...result];
+    // await Comment.findByIdAndDelete(commentId);
+
+    // const result = commentPost.comments.filter(
+    //   (comment) => comment.id !== commentId
+    // );
+
+    // commentPost.comments = [...result];
 
     await commentPost.save();
-
-    res.json({ commentPost });
+    const resultPost = await PostMessage.findById(_id)
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "author", select: "-password -sub" },
+      });
+    console.log("resultPost", resultPost);
+    res.status(200).json({ resultPost });
   } catch (err) {
+    console.log("err", err);
     res.status(500).json({ message: err.message });
   }
 };

@@ -128,7 +128,7 @@ const Navbar = () => {
                 alt={user?.result.name}
                 src={user?.result.picture}
                 sx={{ margin: "0 25px 0", bgcolor: randomColor() }}
-                referrerPolicy="no-referrer"
+                referrerpolicy="no-referrer"
               >
                 {user?.result.name.charAt(0)}
               </Avatar>

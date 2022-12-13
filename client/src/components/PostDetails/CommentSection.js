@@ -62,10 +62,10 @@ const CommentSection = ({ post, user }) => {
     }
   };
   console.log("post.comments", post.comments);
-  const userComments = post?.comments.filter(
+  const userComments = post?.comments?.filter(
     (comment) => comment?.author?._id === userId
   );
-  const otherComments = post?.comments.filter(
+  const otherComments = post?.comments?.filter(
     (comment) => comment?.author?._id !== userId
   );
 
@@ -130,7 +130,7 @@ const CommentSection = ({ post, user }) => {
           </div>
         )}
         {userComments
-          .slice(0)
+          ?.slice(0)
           .reverse()
           .map((comment) => (
             <Comments
@@ -141,7 +141,7 @@ const CommentSection = ({ post, user }) => {
               setCommentUpdated={setCommentUpdated}
             />
           ))}
-        {otherComments.map((comment) => (
+        {otherComments?.map((comment) => (
           <Comments
             key={comment?._id}
             comment={comment}

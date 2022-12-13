@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-// let Comment = require("./comment").schema;
-import Comments from "./comment.js";
+// import { createRequire } from "module";
+// const require = createRequire(import.meta.url);
+// let Comments = require("./comment").schema;
+// import Comment, { commentSchema } from "./comment.js";
 
 const Schema = mongoose.Schema;
 
@@ -45,7 +45,7 @@ const postSchema = new Schema({
   //     },
   //   },
   // ],
-  comments: [Comments],
+  comments: [commentSchema],
   createdAt: { type: Date, default: Date.now },
 });
 

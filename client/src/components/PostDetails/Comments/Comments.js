@@ -48,7 +48,7 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
   };
 
   const handleCommentDelete = async () => {
-    const { commentPost } = await toast.promise(
+    const { resultPost } = await toast.promise(
       deleteComment(comment?._id, postId),
       {
         pending: "Deleting...",
@@ -56,7 +56,7 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
         error: "Something Went Wrong!",
       }
     );
-    dispatch(update(commentPost));
+    dispatch(update(resultPost));
   };
 
   const hasLikedPost = comment?.likes?.find((like) => like === userId);
