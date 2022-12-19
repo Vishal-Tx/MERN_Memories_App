@@ -14,7 +14,7 @@ import Posts from "../Posts/Posts";
 import Modal from "../modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getPostsBySearch } from "../../features/posts/postsSlice";
+import { getPosts, getPostsBySearch } from "../../features/posts/postsSlice";
 import Page from "../Page/Page";
 import { toast } from "react-toastify";
 
@@ -25,6 +25,7 @@ function useQuery() {
 const Home = () => {
   console.log("useLocation().search", useLocation().search);
   const [currentId, setCurrentId] = useState({ id: null, name: "" });
+  const [debouncer, useDebouncer] = useState();
   const dispatch = useDispatch();
   // const posts = useSelector((store) => store.posts);
   const { isOpen } = useSelector((store) => store.modal);
@@ -48,6 +49,22 @@ const Home = () => {
   // useEffect(() => {
   //   dispatch(getPosts());
   // }, [dispatch, currentId]);
+
+  function debounce(cb, delay = 1000) {
+    return (...args) => {
+      setTimeout(() => {
+        cb(...args);
+      }, delay);
+    };
+  }
+
+  useEffect(() => {
+    if (search) {
+      dispatch(getPostsBySearch({ search }));
+    } else {
+      dispatch(getPosts());
+    }
+  }, [search]);
 
   const searchPost = () => {
     if (search.trim() || tags.length) {
