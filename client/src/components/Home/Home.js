@@ -25,7 +25,7 @@ function useQuery() {
 const Home = () => {
   console.log("useLocation().search", useLocation().search);
   const [currentId, setCurrentId] = useState({ id: null, name: "" });
-  const [debouncer, useDebouncer] = useState();
+  const [debouncer, setDebouncer] = useState("");
   const dispatch = useDispatch();
   // const posts = useSelector((store) => store.posts);
   const { isOpen } = useSelector((store) => store.modal);
@@ -50,21 +50,40 @@ const Home = () => {
   //   dispatch(getPosts());
   // }, [dispatch, currentId]);
 
-  function debounce(cb, delay = 1000) {
-    return (...args) => {
-      setTimeout(() => {
-        cb(...args);
-      }, delay);
-    };
-  }
+  useEffect(() => {
+    let delay = setTimeout(() => {
+      setDebouncer(search);
+    }, 400);
+
+    return () => clearTimeout(delay);
+  }, [search]);
+
+  // function debounce(cb, delay = 1000) {
+  //   return (...args) => {
+  //     setTimeout(() => {
+  //       cb(...args);
+  //     }, delay);
+  //   };
+  // }
 
   useEffect(() => {
-    if (search) {
+    if (debouncer) {
+      console.log("debouncer", debouncer);
+      let search = debouncer;
       dispatch(getPostsBySearch({ search }));
     } else {
       dispatch(getPosts());
     }
-  }, [search]);
+  }, [debouncer]);
+
+  // useEffect(() => {
+  //   if (search) {
+  //     console.log("debouncerUseEffect", search);
+  //     dispatch(getPostsBySearch({ search }));
+  //   } else {
+  //     dispatch(getPosts());
+  //   }
+  // }, [search]);
 
   const searchPost = () => {
     if (search.trim() || tags.length) {
