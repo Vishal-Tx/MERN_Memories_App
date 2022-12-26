@@ -38,7 +38,7 @@ const Post = ({ post, setCurrentId }) => {
   //   const data = await likePost(post._id);
   //   dispatch(update(data));
   // };
-  console.log("likes", likes);
+  // console.log("likes", likes);
   const handleLike = async () => {
     const data = await likePost(post._id);
     dispatch(update(data));

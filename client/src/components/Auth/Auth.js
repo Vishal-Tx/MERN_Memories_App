@@ -44,7 +44,7 @@ const Auth = () => {
         dispatch(LogIn(signupRes));
         navigate(-1);
       } catch (error) {
-        console.log("error", error);
+        // console.log("error", error);
         toast.error(error?.response?.data.message);
       }
     } else {
@@ -54,7 +54,7 @@ const Auth = () => {
           pending: "Hang on...",
           success: `Logged in Successfully!`,
         });
-        console.log("signinRRRRRRRRRRR", signinRes);
+        // console.log("signinRRRRRRRRRRR", signinRes);
         dispatch(LogIn(signinRes));
         navigate(-1);
       } catch (error) {
@@ -86,7 +86,7 @@ const Auth = () => {
         }
       );
 
-      console.log("result", googleResponse);
+      // console.log("result", googleResponse);
       const gLoginData = {
         result: googleResponse.result,
         token: googleResponse.token,
@@ -170,7 +170,7 @@ const Auth = () => {
             <GoogleLogin
               onSuccess={googleSuccess}
               onError={() => {
-                console.log("Login Failed");
+                // console.log("Login Failed");
                 toast.error("Login Failed");
               }}
             />

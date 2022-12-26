@@ -51,13 +51,13 @@ const PostDetails = () => {
     setLikes(post?.likes);
   }, [post]);
 
-  console.log("INDIpost", post);
+  // console.log("INDIpost", post);
   const [isOpenPosts, setIsOpenPosts] = useState(true);
   const [currentId, setCurrentId] = useState({ id: null, name: "" });
   const [updateForm, setUpdateForm] = useState(false);
   const [likes, setLikes] = useState(post?.likes);
 
-  console.log("postLokes", likes);
+  // console.log("postLokes", likes);
 
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?._id;
@@ -74,7 +74,7 @@ const PostDetails = () => {
 
   const handleLike = async () => {
     const data = await likePost(post?._id);
-    console.log("data", data);
+    // console.log("data", data);
     dispatch(update(data));
 
     if (hasLikedPost) {

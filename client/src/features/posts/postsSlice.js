@@ -13,14 +13,14 @@ const initialState = {
   currentPage: 1,
   numberOfPages: 1,
 };
-console.log("initialState.posts", initialState.posts);
+// console.log("initialState.posts", initialState.posts);
 
 export const getPosts = createAsyncThunk(
   "posts/getPosts",
   async (page, thunkAPI) => {
     try {
       const res = await fetchPosts(page);
-      console.log("allres", res);
+      // console.log("allres", res);
       return res;
     } catch (error) {
       const {
@@ -37,13 +37,13 @@ export const getPost = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const { post } = await fetchPost(id);
-      console.log("sliceres", post);
+      // console.log("sliceres", post);
       return post;
     } catch (error) {
       const {
         response: { data, status },
       } = error;
-      console.log("fetcherror", error);
+      // console.log("fetcherror", error);
       return thunkAPI.rejectWithValue({ data, status });
     }
   }
@@ -53,15 +53,15 @@ export const getPostsBySearch = createAsyncThunk(
   "posts/getPostsBySearch",
   async (name, thunkAPI) => {
     try {
-      console.log("searched", name);
+      // console.log("searched", name);
       const { posts } = await fetchPostsBySearch(name);
-      console.log("sData", posts);
+      // console.log("sData", posts);
       return posts;
     } catch (error) {
       const {
         response: { data, status },
       } = error;
-      console.log("fetcherror", error);
+      // console.log("fetcherror", error);
       return thunkAPI.rejectWithValue({ data, status });
     }
   }
@@ -75,13 +75,13 @@ const postsSlice = createSlice({
       state.posts = [];
     },
     create: (state, action) => {
-      console.log("action", action.payload);
+      // console.log("action", action.payload);
       state.posts = [...state.posts, action.payload];
     },
     update: (state, action) => {
       state.detailsLoading = true;
-      console.log("actionLike", action.payload);
-      console.log("state.post", state.post);
+      // console.log("actionLike", action.payload);
+      // console.log("state.post", state.post);
 
       state.posts = state.posts.map((post) =>
         post._id === action.payload._id ? action.payload : post
@@ -119,15 +119,15 @@ const postsSlice = createSlice({
       state.posts = action.payload.data;
       state.currentPage = action.payload.currentPage;
       state.numberOfPages = action.payload.numberOfPages;
-      console.log("allposts", action.payload);
-      console.log("state.posts", state.posts);
+      // console.log("allposts", action.payload);
+      // console.log("state.posts", state.posts);
       state.error = null;
     },
     [getPosts.rejected]: (state, action) => {
-      console.log("Raction", action);
+      // console.log("Raction", action);
       state.isLoading = false;
       state.error = action.payload;
-      console.log("rejected");
+      // console.log("rejected");
     },
 
     [getPost.pending]: (state, action) => {
@@ -136,16 +136,16 @@ const postsSlice = createSlice({
     [getPost.fulfilled]: (state, action) => {
       state.detailsLoading = false;
       state.post = action.payload;
-      console.log("allposts", action.payload);
-      console.log("state.posts", state.posts);
-      console.log("state.post", state.post);
+      // console.log("allposts", action.payload);
+      // console.log("state.posts", state.posts);
+      // console.log("state.post", state.post);
       state.error = null;
     },
     [getPost.rejected]: (state, action) => {
-      console.log("Raction", action);
+      // console.log("Raction", action);
       state.detailsLoading = false;
       state.error = action.payload;
-      console.log("rejected");
+      // console.log("rejected");
     },
 
     [getPostsBySearch.pending]: (state, action) => {
@@ -153,15 +153,15 @@ const postsSlice = createSlice({
     },
     [getPostsBySearch.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("actionS", action.payload);
+      // console.log("actionS", action.payload);
       state.posts = action.payload;
       state.error = null;
     },
     [getPostsBySearch.rejected]: (state, action) => {
-      console.log("Raction", action);
+      // console.log("Raction", action);
       state.isLoading = false;
       state.error = action.payload;
-      console.log("rejected");
+      // console.log("rejected");
     },
   },
 });

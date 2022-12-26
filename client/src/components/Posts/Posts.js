@@ -6,7 +6,7 @@ import Errorhandler from "../Errorhandler";
 
 function Posts({ setCurrentId }) {
   const { posts, isLoading, error } = useSelector((store) => store.posts);
-  console.log("error", error);
+  // console.log("error", error);
   return isLoading ? (
     <Grid container alignItems="stretch" spacing={3}>
       {[...Array(8)].map((item, index) => (

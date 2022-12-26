@@ -40,9 +40,9 @@ function Form({ currentId, setCurrentId, setUpdateForm }) {
   }, [post, authData]);
 
   const clear = () => {
-    console.log("clear1");
+    // console.log("clear1");
     setCurrentId({ id: 0, name: "" });
-    console.log("clear2");
+    // console.log("clear2");
     setPostData({
       title: "",
       message: "",
@@ -50,7 +50,7 @@ function Form({ currentId, setCurrentId, setUpdateForm }) {
       selectedFile: "",
     });
     inputRef.current.value = null;
-    console.log("clear3");
+    // console.log("clear3");
     if (setUpdateForm) setUpdateForm(false);
   };
 
@@ -79,7 +79,7 @@ function Form({ currentId, setCurrentId, setUpdateForm }) {
         // if (data) toast.success(`Successfully created the Memory.`);
       }
     }
-    console.log("hitclear");
+    // console.log("hitclear");
     clear();
   };
   const handleChange = (e) => {

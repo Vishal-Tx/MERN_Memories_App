@@ -5,15 +5,21 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getPosts } from "../../features/posts/postsSlice";
+import { useGetPostsQuery } from "../../features/apiSlice";
 
 const Page = ({ page, currentId }) => {
   const dispatch = useDispatch();
   const { currentPage, numberOfPages } = useSelector((state) => state.posts);
-  console.log(currentPage, numberOfPages);
+  // console.log(currentPage, numberOfPages);
 
   useEffect(() => {
     if (page) dispatch(getPosts(page));
   }, [page, currentId]);
+
+  const { data, error, isLoading } = useGetPostsQuery(page);
+  console.log("data", data);
+  console.log("error", error);
+  console.log("isLoading", isLoading);
 
   return (
     <Pagination

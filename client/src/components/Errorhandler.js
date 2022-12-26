@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 
 const Errorhandler = ({ error }) => {
-  console.log("Errorhandler", error);
+  // console.log("Errorhandler", error);
   return (
     <Box
       sx={{

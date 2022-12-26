@@ -28,7 +28,7 @@ const Navbar = () => {
 
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
-  console.log("userstate", user);
+  // console.log("userstate", user);
   const matches = useMediaQuery("(min-width:600px)");
 
   const handleLogout = () => {

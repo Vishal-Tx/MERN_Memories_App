@@ -63,7 +63,7 @@ const Comments = ({ comment, user, postId, setCommentUpdated }) => {
 
   const handleLike = async () => {
     const data = await likeComment(comment?._id, postId);
-    console.log("Likedata", data);
+    // console.log("Likedata", data);
     dispatch(update(data));
 
     if (hasLikedPost) {

@@ -30,7 +30,7 @@ const CommentSection = ({ post, user }) => {
   const handleComment = async (e) => {
     e.preventDefault();
     if (commentUpdated.appear) {
-      console.log(commentUpdated);
+      // console.log(commentUpdated);
       const { value: comment } = commentUpdated;
       // await update(post._id, { comments: { $push: [comment] } });
       // setCommentUpdated(false);
@@ -51,17 +51,17 @@ const CommentSection = ({ post, user }) => {
       setCommentUpdated({ appear: false, value: null });
       commentsRef.current.value = null;
     } else {
-      console.log("commentsRef.current.value", commentsRef.current.value);
+      // console.log("commentsRef.current.value", commentsRef.current.value);
       const comment = commentsRef.current.value;
       const data = await postComment(userId, comment, post?._id);
-      console.log("CCdata", data);
+      // console.log("CCdata", data);
       setComments("");
       setComments(data?.comments);
       dispatch(update(data));
       commentsRef.current.value = null;
     }
   };
-  console.log("post.comments", post.comments);
+  // console.log("post.comments", post.comments);
   const userComments = post?.comments?.filter(
     (comment) => comment?.author?._id === userId
   );

@@ -23,24 +23,24 @@ export const postPost = async (post) => {
 
 export const fetchPosts = async (page) => {
   const { data } = await API.get(`/posts?page=${page}`);
-  console.log("totalPosts", data);
+  // console.log("totalPosts", data);
   return data;
 };
 
 export const fetchPost = async (id) => {
   const { data } = await API.get(`/posts/${id}`);
-  console.log("individualpostfromBack", data);
+  // console.log("individualpostfromBack", data);
   return data;
 };
 
 export const fetchPostsBySearch = async (searchQuery) => {
-  console.log("searchQueryapi", searchQuery);
+  // console.log("searchQueryapi", searchQuery);
   const { data } = await API.get(
     `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${
       searchQuery.tags
     }`
   );
-  console.log("searchAPIData", data);
+  // console.log("searchAPIData", data);
   return data;
 };
 
@@ -65,7 +65,7 @@ export const deletePost = async (id) => {
 export const likePost = async (id) => {
   try {
     const { data } = await API.patch(`/posts/${id}/likePost`);
-    console.log("APiLike", data);
+    // console.log("APiLike", data);
 
     return data;
   } catch (error) {
@@ -84,7 +84,7 @@ export const postComment = async (userId, comment, id) => {
 
 export const deleteComment = async (commentId, id) => {
   const { data } = await API.delete(`/posts/${id}/deleteComment/${commentId}`);
-  console.log("DeleteCommentAPIDAta", data);
+  // console.log("DeleteCommentAPIDAta", data);
   return data;
 };
 
@@ -93,38 +93,38 @@ export const updateComment = async (userId, comment, id) => {
     userId,
     comment,
   });
-  console.log("UpdateCommentAPIDAta", data);
+  // console.log("UpdateCommentAPIDAta", data);
   return data;
 };
 
 export const likeComment = async (commentId, id) => {
   const { data } = await API.patch(`/posts/${id}/likeComment/${commentId}`);
-  console.log("APiCommentLike", data);
+  // console.log("APiCommentLike", data);
 
   return data;
 };
 
 export const signin = async (formData) => {
   const { data } = await API.post("/user/signin", formData);
-  console.log("SignInData", data);
+  // console.log("SignInData", data);
   return data;
 };
 
 export const signup = async (formData) => {
   const { data } = await API.post("/user/signup", formData);
-  console.log("SignupData", data);
+  // console.log("SignupData", data);
   return data;
 };
 
 export const signinGoogle = async (gData) => {
   // console.log("signinGoogle", gData);
   const { data } = await API.post("/user/signinGoogle", { data: gData });
-  console.log("googleSignin", data);
+  // console.log("googleSignin", data);
   return data;
 };
 
 export const fetchUser = async (id) => {
   const { data } = await API.get(`/user/${id}`);
-  console.log("user", data);
+  // console.log("user", data);
   return data;
 };

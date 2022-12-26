@@ -13,16 +13,14 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 const root = createRoot(document.getElementById("root"));
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
-        {/* {console.log(
+  <Provider store={store}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
+      {/* {console.log(
           "process.env.GOOGLE_API_TOKEN",
           process.env.GOOGLE_API_TOKEN
         )} */}
-        <App />
-      </GoogleOAuthProvider>
-      <ToastContainer />
-    </Provider>
-  </React.StrictMode>
+      <App />
+    </GoogleOAuthProvider>
+    <ToastContainer />
+  </Provider>
 );

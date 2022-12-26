@@ -23,7 +23,7 @@ function useQuery() {
 }
 
 const Home = () => {
-  console.log("useLocation().search", useLocation().search);
+  // console.log("useLocation().search", useLocation().search);
   const [currentId, setCurrentId] = useState({ id: null, name: "" });
   const [debouncer, setDebouncer] = useState("");
   const dispatch = useDispatch();
@@ -36,9 +36,9 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
 
-  console.log("page", page);
+  // console.log("page", page);
 
-  console.log("searchQuery", searchQuery);
+  // console.log("searchQuery", searchQuery);
   const handleAddChip = (chip) => {
     setTags([...tags, chip]);
   };
@@ -49,6 +49,10 @@ const Home = () => {
   // useEffect(() => {
   //   dispatch(getPosts());
   // }, [dispatch, currentId]);
+  // const { data, error, isLoading } = useGetPostsQuery("1");
+  // console.log("data", data);
+  // console.log("error", error);
+  // console.log("isLoading", isLoading);
 
   useEffect(() => {
     let delay = setTimeout(() => {
@@ -68,12 +72,13 @@ const Home = () => {
 
   useEffect(() => {
     if (debouncer) {
-      console.log("debouncer", debouncer);
+      // console.log("debouncer", debouncer);
       let search = debouncer;
       dispatch(getPostsBySearch({ search }));
-    } else {
-      dispatch(getPosts());
     }
+    // else {
+    //   dispatch(getPosts());
+    // }
   }, [debouncer]);
 
   // useEffect(() => {
@@ -87,8 +92,8 @@ const Home = () => {
 
   const searchPost = () => {
     if (search.trim() || tags.length) {
-      console.log("search", search);
-      console.log("tags", tags);
+      // console.log("search", search);
+      // console.log("tags", tags);
       dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
       navigate(
         `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
@@ -100,7 +105,7 @@ const Home = () => {
   };
 
   const handleKeyPress = (e) => {
-    console.log("e.key", e.key);
+    // console.log("e.key", e.key);
     if (e.key === "Enter") {
       searchPost();
     }
