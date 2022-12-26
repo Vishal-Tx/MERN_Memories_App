@@ -17,6 +17,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { getPosts, getPostsBySearch } from "../../features/posts/postsSlice";
 import Page from "../Page/Page";
 import { toast } from "react-toastify";
+import { useGetPostsQuery } from "../../features/apiSlice";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -111,6 +112,9 @@ const Home = () => {
     }
   };
 
+  const queryRes = useGetPostsQuery(page);
+  console.log("queryRes", queryRes);
+
   return (
     <div>
       {isOpen && <Modal currentId={currentId} setCurrentId={setCurrentId} />}
@@ -125,7 +129,11 @@ const Home = () => {
             wrap="wrap-reverse"
           >
             <Grid item xs={12} sm={6} md={9}>
-              <Posts setCurrentId={setCurrentId} />
+              <Posts
+                setCurrentId={setCurrentId}
+                page={page}
+                queryRes={queryRes}
+              />
             </Grid>
             <Grid item xs={12} sm={6} md={3} sx={{ mt: { xs: "80px", sm: 0 } }}>
               <AppBar
@@ -168,7 +176,7 @@ const Home = () => {
               <Form currentId={currentId} setCurrentId={setCurrentId} />
               {!searchQuery && !tags.length && (
                 <Paper elevation={6} sx={{ borderRadius: "15px" }}>
-                  <Page page={page} currentId={currentId} />
+                  <Page page={page} currentId={currentId} queryRes={queryRes} />
                 </Paper>
               )}
             </Grid>

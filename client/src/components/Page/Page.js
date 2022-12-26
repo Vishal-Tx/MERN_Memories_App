@@ -7,24 +7,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../features/posts/postsSlice";
 import { useGetPostsQuery } from "../../features/apiSlice";
 
-const Page = ({ page, currentId }) => {
+const Page = ({ page, currentId, queryRes }) => {
   const dispatch = useDispatch();
-  const { currentPage, numberOfPages } = useSelector((state) => state.posts);
-  // console.log(currentPage, numberOfPages);
+  // const { currentPage, numberOfPages } = useSelector((state) => state.posts);
+  // const {
+  //   data: { currentPage, numberOfPages },
+  // } = queryRes;
+  let currentPage = queryRes.data?.currentPage;
+  let numberOfPages = queryRes.data?.numberOfPages;
+  // console.log("qData", data);
 
-  useEffect(() => {
-    if (page) dispatch(getPosts(page));
-  }, [page, currentId]);
-
-  const { data, error, isLoading } = useGetPostsQuery(page);
-  console.log("data", data);
-  console.log("error", error);
-  console.log("isLoading", isLoading);
+  //Main
+  // useEffect(() => {
+  //   if (page) dispatch(getPosts(page));
+  // }, [page, currentId]);
 
   return (
     <Pagination
       count={numberOfPages}
-      page={page}
+      page={currentPage}
       color="secondary"
       sx={{
         mt: "12px",
@@ -32,14 +33,17 @@ const Page = ({ page, currentId }) => {
         display: "flex",
         justifyContent: "center",
       }}
-      renderItem={(item) => (
-        <PaginationItem
-          variant="text"
-          component={Link}
-          to={`/posts?page=${item.page}`}
-          {...item}
-        />
-      )}
+      renderItem={(item) => {
+        console.log("item", item);
+        return (
+          <PaginationItem
+            variant="text"
+            component={Link}
+            to={`/posts?page=${item.page}`}
+            {...item}
+          />
+        );
+      }}
     />
   );
 };
