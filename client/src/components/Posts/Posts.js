@@ -8,12 +8,12 @@ import { useGetPostsQuery } from "../../features/apiSlice";
 function Posts({ setCurrentId, page, queryRes }) {
   // const { posts, isLoading, error } = useSelector((store) => store.posts);
   // console.log("error", error);
-  const { data, error, isLoading } = queryRes;
+  const { data, error, isLoading, isFetching } = queryRes;
   // console.log("data", data);
   // console.log("error", error);
   // console.log("isLoading", isLoading);
   const posts = data?.data;
-  return isLoading ? (
+  return isLoading || isFetching ? (
     <Grid container alignItems="stretch" spacing={3}>
       {[...Array(8)].map((item, index) => (
         <Grid

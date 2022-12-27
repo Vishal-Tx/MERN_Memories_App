@@ -8,19 +8,22 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Navbar, Home, Auth, PostDetails, UserDetails } from "./components";
+import Layout from "./components/Layout/Layout";
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
   return (
     <Router>
-      <Container maxWidth="xl">
-        <Navbar />
-        <Routes>
-          <Route path="/" exact element={<Navigate to="/posts" />} />
-          <Route path="/posts" exact element={<Home />} />
-          <Route path="/posts/search" exact element={<Home />} />
-          <Route path="/posts/:id" exact element={<PostDetails />} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="/posts" />} />
+
+          <Route path="posts">
+            <Route index exact element={<Home />} />
+            <Route path="search" exact element={<Home />} />
+            <Route path=":id" exact element={<PostDetails />} />
+          </Route>
 
           <Route
             path="/auth"
@@ -30,8 +33,8 @@ const App = () => {
           />
 
           <Route path="/user/:id" exact element={<UserDetails />} />
-        </Routes>
-      </Container>
+        </Route>
+      </Routes>
     </Router>
   );
 };
