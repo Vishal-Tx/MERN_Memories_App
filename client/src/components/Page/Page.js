@@ -25,7 +25,7 @@ const Page = ({ page, currentId, queryRes }) => {
   return (
     <Pagination
       count={numberOfPages}
-      page={currentPage}
+      page={currentPage || 1}
       color="secondary"
       sx={{
         mt: "12px",
@@ -33,17 +33,14 @@ const Page = ({ page, currentId, queryRes }) => {
         display: "flex",
         justifyContent: "center",
       }}
-      renderItem={(item) => {
-        console.log("item", item);
-        return (
-          <PaginationItem
-            variant="text"
-            component={Link}
-            to={`/posts?page=${item.page}`}
-            {...item}
-          />
-        );
-      }}
+      renderItem={(item) => (
+        <PaginationItem
+          variant="text"
+          component={Link}
+          to={`/posts?page=${item.page}`}
+          {...item}
+        />
+      )}
     />
   );
 };

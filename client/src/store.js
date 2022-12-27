@@ -15,6 +15,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(postApi.middleware),
+  devTools: true,
 });
 
 setupListeners(store.dispatch);
