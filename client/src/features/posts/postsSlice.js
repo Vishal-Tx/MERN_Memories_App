@@ -8,7 +8,9 @@ import { fetchPosts, fetchPostsBySearch, fetchPost } from "../api";
 
 const url = "http://localhost:3001/posts";
 
-const postsAdapter = createEntityAdapter({});
+const postsAdapter = createEntityAdapter({
+  selectId: (e) => e._id,
+});
 
 const initialState = postsAdapter.getInitialState({
   post: null,
@@ -164,7 +166,7 @@ const postsSlice = createSlice({
     },
     [getPostsBySearch.fulfilled]: (state, action) => {
       state.isLoading = false;
-      // console.log("actionS", action.payload);
+      console.log("getPostsBySearch", action.payload);
       postsAdapter.upsertMany(state, action.payload);
       // state.posts = action.payload;
 
@@ -181,5 +183,8 @@ const postsSlice = createSlice({
 
 export const { fetchAll, create, update, remove, like, addComment } =
   postsSlice.actions;
+
+export const { selectAll, selectById, selectTotal, selectEntities, selectIds } =
+  postsAdapter.getSelectors((state) => state.posts);
 
 export default postsSlice.reducer;

@@ -14,7 +14,15 @@ import Posts from "../Posts/Posts";
 import Modal from "../modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getPosts, getPostsBySearch } from "../../features/posts/postsSlice";
+import {
+  getPosts,
+  getPostsBySearch,
+  selectAll,
+  selectById,
+  selectEntities,
+  selectIds,
+  selectTotal,
+} from "../../features/posts/postsSlice";
 import Page from "../Page/Page";
 import { toast } from "react-toastify";
 import { useGetPostsQuery } from "../../features/apiSlice";

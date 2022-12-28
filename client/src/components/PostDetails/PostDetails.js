@@ -21,6 +21,11 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   getPost,
   getPostsBySearch,
+  selectAll,
+  selectById,
+  selectEntities,
+  selectIds,
+  selectTotal,
   update,
 } from "../../features/posts/postsSlice";
 import Errorhandler from "../Errorhandler";
@@ -36,7 +41,7 @@ import Skeleton from "@mui/material/Skeleton";
 dayjs.extend(relativeTime);
 
 const PostDetails = () => {
-  const { posts, isLoading, error, post, detailsLoading } = useSelector(
+  const { isLoading, error, post, detailsLoading } = useSelector(
     (store) => store.posts
   );
   const { id } = useParams();
@@ -64,6 +69,17 @@ const PostDetails = () => {
 
   const { isOpen } = useSelector((store) => store.modal);
 
+  const posts = useSelector((store) => selectAll(store));
+  // const selectByIds = useSelector((store) => selectById(store, post._id));
+  // const selectTotals = useSelector((store) => selectTotal(store));
+  // const selectEntitiesC = useSelector(selectEntities);
+  // const selectIdss = useSelector((store) => selectIds(store));
+
+  // console.log("selectAll", posts);
+  // console.log("selectById", selectByIds);
+  // console.log("selectTotal", selectTotals);
+  //console.log("selectEntities", selectEntitiesC);
+
   // const handleLike = async () => {
   //   console.log("post._idLike", post._id);
   //   const data = await likePost(post?._id);
@@ -78,7 +94,7 @@ const PostDetails = () => {
     dispatch(update(data));
 
     if (hasLikedPost) {
-      setLikes(post.likes.filter((id) => id !== userId));
+      setLikes(post?.likes?.filter((id) => id !== userId));
     } else {
       setLikes([...post.likes, userId]);
     }
@@ -99,7 +115,7 @@ const PostDetails = () => {
 
   if (!post) return null;
 
-  const recommendedPosts = posts.filter(({ _id }) => _id !== post?._id);
+  const recommendedPosts = posts?.filter(({ _id }) => _id !== post?._id);
   // console.log("recommendedPosts", recommendedPosts);
 
   return detailsLoading ? (
