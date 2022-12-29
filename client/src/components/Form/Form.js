@@ -27,7 +27,7 @@ function Form({ currentId, setCurrentId, setUpdateForm }) {
       posts: { posts },
     } = store;
     return currentId.id && currentId.name === "update"
-      ? posts.find((p) => p._id === currentId.id)
+      ? posts.find((p) => p.id === currentId.id)
       : null;
   });
 
@@ -75,7 +75,7 @@ function Form({ currentId, setCurrentId, setUpdateForm }) {
       // console.log("udata", data);
       if (data) {
         dispatch(create(data));
-        navigate(`/posts/${data._id}`);
+        navigate(`/posts/${data.id}`);
         // if (data) toast.success(`Successfully created the Memory.`);
       }
     }

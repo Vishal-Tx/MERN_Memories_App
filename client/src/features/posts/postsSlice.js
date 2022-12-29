@@ -84,19 +84,28 @@ const postsSlice = createSlice({
     },
     create: (state, action) => {
       // console.log("action", action.payload);
-      postsAdapter.addOne(state, action.payload);
+      const loadedPost = action.payload;
+
+      loadedPost.id = loadedPost._id;
+      delete loadedPost._id;
+      postsAdapter.addOne(state, loadedPost);
       // state.posts = [...state.posts, action.payload];
     },
     update: (state, action) => {
       state.detailsLoading = true;
-      // console.log("actionLike", action.payload);
+      console.log("actionLike", action.payload);
       // console.log("state.post", state.post);
 
       // state.posts = state.posts.map((post) =>
       //   post._id === action.payload._id ? action.payload : post
       // );
-      postsAdapter.upsertOne(state, action.payload);
-      state.post = action.payload;
+      const loadedPost = action.payload;
+
+      loadedPost.id = loadedPost._id;
+      delete loadedPost._id;
+
+      postsAdapter.upsertOne(state, loadedPost);
+      state.post = loadedPost;
       state.detailsLoading = false;
     },
     remove: (state, action) => {
@@ -135,7 +144,8 @@ const postsSlice = createSlice({
         delete post._id;
         return post;
       });
-      postsAdapter.upsertMany(state, loadedPosts);
+      console.log("loadedPosts", loadedPosts);
+      postsAdapter.setAll(state, loadedPosts);
       state.currentPage = action.payload.currentPage;
       state.numberOfPages = action.payload.numberOfPages;
       // console.log("allposts", action.payload);
@@ -153,8 +163,13 @@ const postsSlice = createSlice({
       state.detailsLoading = true;
     },
     [getPost.fulfilled]: (state, action) => {
+      const loadedPost = action.payload;
+
+      loadedPost.id = loadedPost._id;
+      delete loadedPost._id;
       state.detailsLoading = false;
-      state.post = action.payload;
+
+      state.post = loadedPost;
       // console.log("allposts", action.payload);
       // console.log("state.posts", state.posts);
       // console.log("state.post", state.post);
@@ -179,8 +194,8 @@ const postsSlice = createSlice({
         delete post._id;
         return post;
       });
-
-      postsAdapter.upsertMany(state, loadedPosts);
+      console.log("postsAdapter", postsAdapter);
+      postsAdapter.setAll(state, loadedPosts);
       // state.posts = action.payload;
 
       state.error = null;

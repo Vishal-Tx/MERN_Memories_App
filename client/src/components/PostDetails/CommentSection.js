@@ -38,7 +38,7 @@ const CommentSection = ({ post, user }) => {
         updateComment(
           userId,
           { ...comment, body: commentsRef.current.value },
-          post?._id
+          post?.id
         ),
         {
           pending: "Updating...",
@@ -53,7 +53,7 @@ const CommentSection = ({ post, user }) => {
     } else {
       // console.log("commentsRef.current.value", commentsRef.current.value);
       const comment = commentsRef.current.value;
-      const data = await postComment(userId, comment, post?._id);
+      const data = await postComment(userId, comment, post?.id);
       // console.log("CCdata", data);
       setComments("");
       setComments(data?.comments);
@@ -137,7 +137,7 @@ const CommentSection = ({ post, user }) => {
               key={comment?._id}
               comment={comment}
               user={user}
-              postId={post?._id}
+              postId={post?.id}
               setCommentUpdated={setCommentUpdated}
             />
           ))}
@@ -146,7 +146,7 @@ const CommentSection = ({ post, user }) => {
             key={comment?._id}
             comment={comment}
             user={user}
-            postId={post?._id}
+            postId={post?.id}
             setCommentUpdated={setCommentUpdated}
           />
         ))}

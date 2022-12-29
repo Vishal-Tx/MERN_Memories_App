@@ -40,6 +40,7 @@ const Post = ({ post, setCurrentId }) => {
   // };
   // console.log("likes", likes);
   const handleLike = async () => {
+    console.log("handlelike", post);
     const data = await likePost(post.id);
     dispatch(update(data));
 
@@ -194,7 +195,7 @@ const Post = ({ post, setCurrentId }) => {
               style={{ color: "black" }}
               size="small"
               onClick={(e) => {
-                setCurrentId({ id: post._id, name: "update" });
+                setCurrentId({ id: post.id, name: "update" });
               }}
             >
               <MoreHorizIcon fontSize="medium" />
@@ -223,7 +224,7 @@ const Post = ({ post, setCurrentId }) => {
             size="small"
             color="error"
             onClick={() => {
-              setCurrentId({ id: post._id, name: "delete" });
+              setCurrentId({ id: post.id, name: "delete" });
               dispatch(openModal());
             }}
           >

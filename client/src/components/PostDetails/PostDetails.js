@@ -90,7 +90,8 @@ const PostDetails = () => {
   const hasLikedPost = post?.likes?.find((like) => like === userId);
 
   const handleLike = async () => {
-    const data = await likePost(post?._id);
+    console.log("handlelike", post);
+    const data = await likePost(post?.id);
     // console.log("data", data);
     dispatch(update(data));
 
@@ -102,7 +103,7 @@ const PostDetails = () => {
   };
 
   useEffect(() => {
-    if (post && post?._id === id) {
+    if (post && post?.id === id) {
       dispatch(
         getPostsBySearch({ search: "none", tags: post?.tags.join(",") })
       );
@@ -116,7 +117,7 @@ const PostDetails = () => {
 
   if (!post) return null;
 
-  const recommendedPosts = posts?.filter(({ id }) => id !== post?._id);
+  const recommendedPosts = posts?.filter(({ id }) => id !== post?.id);
   // console.log("recommendedPosts", recommendedPosts);
 
   return detailsLoading ? (
@@ -236,7 +237,7 @@ const PostDetails = () => {
                         style={{ color: "black" }}
                         size="small"
                         onClick={(e) => {
-                          setCurrentId({ id: post?._id, name: "update" });
+                          setCurrentId({ id: post?.id, name: "update" });
                           setUpdateForm(true);
                         }}
                       >
@@ -265,7 +266,7 @@ const PostDetails = () => {
                         size="small"
                         color="error"
                         onClick={() => {
-                          setCurrentId({ id: post?._id, name: "delete" });
+                          setCurrentId({ id: post?.id, name: "delete" });
                           dispatch(openModal());
                         }}
                       >
