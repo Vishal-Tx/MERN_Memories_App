@@ -3,7 +3,7 @@ import { Typography, Paper, Button, TextField } from "@mui/material";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { postPost, updatePost } from "../../features/api";
-import { create, update } from "../../features/posts/postsSlice";
+import { create, selectById, update } from "../../features/posts/postsSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -22,14 +22,15 @@ function Form({ currentId, setCurrentId, setUpdateForm }) {
   const user = JSON.parse(localStorage.getItem("profile"));
   const inputRef = useRef(null);
 
-  const post = useSelector((store) => {
-    const {
-      posts: { posts },
-    } = store;
-    return currentId.id && currentId.name === "update"
-      ? posts.find((p) => p.id === currentId.id)
-      : null;
-  });
+  // const post = useSelector((store) => {
+  //   const {
+  //     posts: { posts },
+  //   } = store;
+  //   return currentId.id && currentId.name === "update"
+  //     ? posts.find((p) => p.id === currentId.id)
+  //     : null;
+  // });
+  const post = useSelector((store) => selectById(store, currentId.id));
 
   const { authData } = useSelector((store) => store.auth);
 

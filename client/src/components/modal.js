@@ -17,7 +17,7 @@ export default function AlertDialog({ currentId, setCurrentId, detailsPage }) {
   const navigate = useNavigate();
   const { isOpen } = useSelector((store) => store.modal);
   const post = useSelector((store) => selectById(store, currentId.id));
-  console.log("currentId", currentId);
+  // console.log("currentId", currentId);
 
   // const post = useSelector((store) => {
   //   const {
