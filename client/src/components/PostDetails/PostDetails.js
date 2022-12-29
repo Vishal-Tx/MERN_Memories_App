@@ -70,6 +70,7 @@ const PostDetails = () => {
   const { isOpen } = useSelector((store) => store.modal);
 
   const posts = useSelector((store) => selectAll(store));
+  // console.log("posts", posts);
   // const selectByIds = useSelector((store) => selectById(store, post._id));
   // const selectTotals = useSelector((store) => selectTotal(store));
   // const selectEntitiesC = useSelector(selectEntities);
@@ -115,7 +116,7 @@ const PostDetails = () => {
 
   if (!post) return null;
 
-  const recommendedPosts = posts?.filter(({ _id }) => _id !== post?._id);
+  const recommendedPosts = posts?.filter(({ id }) => id !== post?._id);
   // console.log("recommendedPosts", recommendedPosts);
 
   return detailsLoading ? (
@@ -347,10 +348,10 @@ const PostDetails = () => {
                         message,
                         likes,
                         selectedFile,
-                        _id,
+                        id,
                       }) => (
                         <Card
-                          key={_id}
+                          key={id}
                           raised
                           elevation={6}
                           sx={{
@@ -368,7 +369,7 @@ const PostDetails = () => {
                         >
                           <ButtonBase
                             onClick={() => {
-                              navigate(`/posts/${_id}`);
+                              navigate(`/posts/${id}`);
                             }}
                             component="span"
                             name="test"

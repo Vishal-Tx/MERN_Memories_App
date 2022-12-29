@@ -7,25 +7,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../features/posts/postsSlice";
 import { useGetPostsQuery } from "../../features/apiSlice";
 
-const Page = ({ page, currentId, queryRes }) => {
+const Page = ({ page, currentId }) => {
   const dispatch = useDispatch();
-  // const { currentPage, numberOfPages } = useSelector((state) => state.posts);
+  const { currentPage, numberOfPages } = useSelector((state) => state.posts);
   // const {
   //   data: { currentPage, numberOfPages },
   // } = queryRes;
-  let currentPage = queryRes.data?.currentPage;
-  let numberOfPages = queryRes.data?.numberOfPages;
+  // let currentPage = queryRes.data?.currentPage;
+  // let numberOfPages = queryRes.data?.numberOfPages;
   // console.log("qData", data);
 
-  //Main
-  // useEffect(() => {
-  //   if (page) dispatch(getPosts(page));
-  // }, [page, currentId]);
+  // Main
+  useEffect(() => {
+    if (page) dispatch(getPosts(page));
+  }, [page, currentId]);
 
   return (
     <Pagination
       count={numberOfPages}
-      page={currentPage || 1}
+      page={page || 1}
       color="secondary"
       sx={{
         mt: "12px",

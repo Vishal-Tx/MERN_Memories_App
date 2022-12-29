@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../features/modal/modalSlice";
 import { deletePost } from "../features/api";
-import { remove } from "../features/posts/postsSlice";
+import { remove, selectAll, selectById } from "../features/posts/postsSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -16,15 +16,20 @@ export default function AlertDialog({ currentId, setCurrentId, detailsPage }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isOpen } = useSelector((store) => store.modal);
-  const post = useSelector((store) => {
-    const {
-      posts: { posts },
-    } = store;
-    // console.log("uPost", posts);
-    return currentId.id && currentId.name === "delete"
-      ? posts.find((p) => p._id === currentId.id)
-      : null;
-  });
+  const post = useSelector((store) => selectById(store, currentId.id));
+  console.log("currentId", currentId);
+
+  // const post = useSelector((store) => {
+  //   const {
+  //     posts: { posts },
+  //   } = store;
+  //   // console.log("uPost", posts);
+  //   return currentId.id && currentId.name === "delete"
+  //     ? posts.find((p) => p._id === currentId.id)
+  //     : null;
+  // });
+
+  // const posts = useSelector((store) => selectById(store));
 
   const handleDeleteClick = async (id) => {
     // const data = await deletePost(id);

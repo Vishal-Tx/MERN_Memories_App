@@ -17,6 +17,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import {
   getPosts,
   getPostsBySearch,
+  getPostsError,
   selectAll,
   selectById,
   selectEntities,
@@ -119,9 +120,9 @@ const Home = () => {
       searchPost();
     }
   };
-
-  const queryRes = useGetPostsQuery(page);
-  console.log("queryRes", queryRes);
+  //RTK QUERY
+  // const queryRes = useGetPostsQuery(page);
+  // console.log("queryRes", queryRes);
 
   return (
     <div>
@@ -137,11 +138,7 @@ const Home = () => {
             wrap="wrap-reverse"
           >
             <Grid item xs={12} sm={6} md={9}>
-              <Posts
-                setCurrentId={setCurrentId}
-                page={page}
-                queryRes={queryRes}
-              />
+              <Posts setCurrentId={setCurrentId} page={page} />
             </Grid>
             <Grid item xs={12} sm={6} md={3} sx={{ mt: { xs: "80px", sm: 0 } }}>
               <AppBar
@@ -184,7 +181,7 @@ const Home = () => {
               <Form currentId={currentId} setCurrentId={setCurrentId} />
               {!searchQuery && !tags.length && (
                 <Paper elevation={6} sx={{ borderRadius: "15px" }}>
-                  <Page page={page} currentId={currentId} queryRes={queryRes} />
+                  <Page page={page} currentId={currentId} />
                 </Paper>
               )}
             </Grid>

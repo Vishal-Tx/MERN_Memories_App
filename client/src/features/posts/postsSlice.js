@@ -9,7 +9,8 @@ import { fetchPosts, fetchPostsBySearch, fetchPost } from "../api";
 const url = "http://localhost:3001/posts";
 
 const postsAdapter = createEntityAdapter({
-  selectId: (e) => e._id,
+  // selectId: (e) => e._id,
+  // sortComparer: (a, b) => a.title.localeCompare(b.title),
 });
 
 const initialState = postsAdapter.getInitialState({
@@ -129,7 +130,12 @@ const postsSlice = createSlice({
       state.isLoading = false;
 
       // state.posts = action.payload.data;
-      postsAdapter.upsertMany(state, action.payload.data);
+      const loadedPosts = action.payload.data.map((post) => {
+        post.id = post._id;
+        delete post._id;
+        return post;
+      });
+      postsAdapter.upsertMany(state, loadedPosts);
       state.currentPage = action.payload.currentPage;
       state.numberOfPages = action.payload.numberOfPages;
       // console.log("allposts", action.payload);
@@ -167,7 +173,14 @@ const postsSlice = createSlice({
     [getPostsBySearch.fulfilled]: (state, action) => {
       state.isLoading = false;
       console.log("getPostsBySearch", action.payload);
-      postsAdapter.upsertMany(state, action.payload);
+      // console.log("getPostsBySearchstate", state);
+      const loadedPosts = action.payload.map((post) => {
+        post.id = post._id;
+        delete post._id;
+        return post;
+      });
+
+      postsAdapter.upsertMany(state, loadedPosts);
       // state.posts = action.payload;
 
       state.error = null;

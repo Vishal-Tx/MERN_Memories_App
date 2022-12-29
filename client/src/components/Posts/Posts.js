@@ -4,16 +4,18 @@ import { useSelector } from "react-redux";
 import { Grid, Skeleton } from "@mui/material";
 import Errorhandler from "../Errorhandler";
 import { useGetPostsQuery } from "../../features/apiSlice";
+import { selectAll } from "../../features/posts/postsSlice";
 
-function Posts({ setCurrentId, page, queryRes }) {
-  // const { posts, isLoading, error } = useSelector((store) => store.posts);
+function Posts({ setCurrentId, page }) {
+  const { isLoading, error } = useSelector((store) => store.posts);
   // console.log("error", error);
-  const { data, error, isLoading, isFetching } = queryRes;
+  // const { data, error, isLoading, isFetching } = queryRes;
   // console.log("data", data);
   // console.log("error", error);
   // console.log("isLoading", isLoading);
-  const posts = data?.data;
-  return isLoading || isFetching ? (
+  // const posts = data?.data;
+  const posts = useSelector((store) => selectAll(store));
+  return isLoading ? (
     <Grid container alignItems="stretch" spacing={3}>
       {[...Array(8)].map((item, index) => (
         <Grid
@@ -39,7 +41,7 @@ function Posts({ setCurrentId, page, queryRes }) {
     <Grid container alignItems="stretch" spacing={3}>
       {posts?.map((post) => (
         <Grid
-          key={post._id}
+          key={post.id}
           item
           xs={12}
           sm={12}

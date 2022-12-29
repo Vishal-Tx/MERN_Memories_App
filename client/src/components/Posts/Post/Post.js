@@ -40,7 +40,7 @@ const Post = ({ post, setCurrentId }) => {
   // };
   // console.log("likes", likes);
   const handleLike = async () => {
-    const data = await likePost(post._id);
+    const data = await likePost(post.id);
     dispatch(update(data));
 
     if (hasLikedPost) {
@@ -52,7 +52,7 @@ const Post = ({ post, setCurrentId }) => {
   // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
 
   const openPost = () => {
-    navigate(`/posts/${post._id}`);
+    navigate(`/posts/${post.id}`);
   };
 
   // const { authData } = useSelector((store) => store.auth);
