@@ -7,9 +7,6 @@ export const postApi = createApi({
     getPosts: builder.query({
       query: (name) => `/posts?page=${name}`,
     }),
-    getPost: builder.query({
-      query: (name) => `/posts?page=${name}`,
-    }),
   }),
 });
 
