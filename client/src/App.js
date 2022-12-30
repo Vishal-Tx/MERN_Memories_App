@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   Navigate,
+  Link,
 } from "react-router-dom";
 import { Navbar, Home, Auth, PostDetails, UserDetails } from "./components";
 import Layout from "./components/Layout/Layout";
