@@ -6,7 +6,7 @@ Application fully support all the CRUD operations of Database means you can crea
 Technologies used:-
 ```
  1. React
- 2. Redux toolkit
+ 2. RTK Query
  3. Express
  4. Nodejs
  5. MongoDB(Mongoose)
