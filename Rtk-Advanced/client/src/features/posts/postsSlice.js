@@ -194,7 +194,6 @@ const postsSlice = createSlice({
         delete post._id;
         return post;
       });
-      console.log("postsAdapter", postsAdapter);
       postsAdapter.setAll(state, loadedPosts);
       // state.posts = action.payload;
 
