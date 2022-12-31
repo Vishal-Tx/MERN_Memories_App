@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../features/modal/modalSlice";
 import { deletePost } from "../features/api";
-import { remove, selectAll, selectById } from "../features/posts/postsSlice";
+import { remove, selectPostById } from "../features/posts/postsSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +16,7 @@ export default function AlertDialog({ currentId, setCurrentId, detailsPage }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isOpen } = useSelector((store) => store.modal);
-  const post = useSelector((store) => selectById(store, currentId.id));
+  const post = useSelector((store) => selectPostById(store, currentId.id));
   // console.log("currentId", currentId);
 
   // const post = useSelector((store) => {

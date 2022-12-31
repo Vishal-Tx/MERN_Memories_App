@@ -3,7 +3,11 @@ import { Typography, Paper, Button, TextField } from "@mui/material";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { postPost, updatePost } from "../../features/api";
-import { create, selectById, update } from "../../features/posts/postsSlice";
+import {
+  create,
+  selectPostById,
+  update,
+} from "../../features/posts/postsSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +34,7 @@ function Form({ currentId, setCurrentId, setUpdateForm }) {
   //     ? posts.find((p) => p.id === currentId.id)
   //     : null;
   // });
-  const post = useSelector((store) => selectById(store, currentId.id));
+  const post = useSelector((store) => selectPostById(store, currentId.id));
 
   const { authData } = useSelector((store) => store.auth);
 

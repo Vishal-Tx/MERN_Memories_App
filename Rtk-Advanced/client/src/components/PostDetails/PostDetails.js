@@ -21,9 +21,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   getPost,
   getPostsBySearch,
-  selectAll,
-  selectById,
-  selectEntities,
+  selectAllPosts,
   selectIds,
   selectTotal,
   update,
@@ -69,7 +67,7 @@ const PostDetails = () => {
 
   const { isOpen } = useSelector((store) => store.modal);
 
-  const posts = useSelector((store) => selectAll(store));
+  const posts = useSelector((store) => selectAllPosts(store));
   // console.log("posts", posts);
   // const selectByIds = useSelector((store) => selectById(store, post._id));
   // const selectTotals = useSelector((store) => selectTotal(store));

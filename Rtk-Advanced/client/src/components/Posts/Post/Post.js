@@ -14,22 +14,24 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../../features/modal/modalSlice";
 import { likePost } from "../../../features/api";
-import { update } from "../../../features/posts/postsSlice";
+import { selectPostById, update } from "../../../features/posts/postsSlice";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
 import Likes from "./Likes";
 import Tooltip from "@mui/material/Tooltip";
 dayjs.extend(relativeTime);
 
-const Post = ({ post, setCurrentId }) => {
+const Post = ({ postId, setCurrentId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("profile"));
   const userId = user?.result?._id;
+
+  const post = useSelector((store) => selectPostById(store, postId));
 
   const [likes, setLikes] = useState(post?.likes);
   const hasLikedPost = post.likes.find((like) => like === userId);
