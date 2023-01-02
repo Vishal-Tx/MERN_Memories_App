@@ -26,7 +26,6 @@ import {
 } from "../../features/posts/postsSlice";
 import Page from "../Page/Page";
 import { toast } from "react-toastify";
-import { useGetPostsQuery } from "../../features/apiSlice";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);

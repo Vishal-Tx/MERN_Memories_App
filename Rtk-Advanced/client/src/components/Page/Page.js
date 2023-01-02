@@ -5,17 +5,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getPosts } from "../../features/posts/postsSlice";
-import { useGetPostsQuery } from "../../features/apiSlice";
 
 const Page = ({ page, currentId }) => {
   const dispatch = useDispatch();
   const { currentPage, numberOfPages } = useSelector((state) => state.posts);
-  // const {
-  //   data: { currentPage, numberOfPages },
-  // } = queryRes;
-  // let currentPage = queryRes.data?.currentPage;
-  // let numberOfPages = queryRes.data?.numberOfPages;
-  // console.log("qData", data);
 
   // Main
   useEffect(() => {
