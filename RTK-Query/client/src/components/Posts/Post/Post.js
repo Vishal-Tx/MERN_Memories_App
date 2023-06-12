@@ -51,9 +51,8 @@ const Post = ({ post, setCurrentId }) => {
     }
   };
   // const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-
   const openPost = () => {
-    navigate(`/posts/${post.id}`);
+    navigate(`/posts/${post?._id}`);
   };
 
   // const { authData } = useSelector((store) => store.auth);
